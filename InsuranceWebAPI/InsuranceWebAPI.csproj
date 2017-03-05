@@ -179,9 +179,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\Site.css" />
     <Content Include="DataLayer\InsuranceData.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>InsuranceData.edmx</DependentUpon>
@@ -192,6 +189,7 @@
       <DependentUpon>InsuranceData.edmx</DependentUpon>
       <LastGenOutput>InsuranceData.cs</LastGenOutput>
     </Content>
+    <Content Include="DB\script.sql" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
   </ItemGroup>
