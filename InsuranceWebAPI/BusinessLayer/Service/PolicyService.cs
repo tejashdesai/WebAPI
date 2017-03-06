@@ -24,7 +24,6 @@ namespace InsuranceWebAPI.BusinessLayer.Service
 
         public int CreatePolicy(PolicyDTO policyEntity)
         {
-
             var policy = new Policy
             {
                 //ProductName = productEntity.ProductName

@@ -5,6 +5,9 @@ using Owin;
 using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
 using System.Security.Claims;
+using InsuranceWebAPI.BusinessLayer.Interface;
+using InsuranceWebAPI.BusinessLayer.Service;
+using InsuranceWebAPI.Entity;
 
 [assembly: OwinStartup(typeof(InsuranceWebAPI.Startup))]
 
@@ -48,26 +51,20 @@ namespace InsuranceWebAPI
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
-
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
-
-            using (AuthRepository _repo = new AuthRepository())
+            IUserService _repo = new UserService();
+            bool user = _repo.FindUser(context.UserName, context.Password);
+            if (user)
             {
-                IdentityUser user = await _repo.FindUser(context.UserName, context.Password);
-
-                if (user == null)
-                {
-                    context.SetError("invalid_grant", "The user name or password is incorrect.");
-                    return;
-                }
+                context.SetError("invalid_grant", "The user name or password is incorrect.");
+                return;
             }
 
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
             identity.AddClaim(new Claim("sub", context.UserName));
-            identity.AddClaim(new Claim("role", "user"));
+            //identity.AddClaim(new Claim("role", "user"));
 
             context.Validated(identity);
-
         }
     }
 }

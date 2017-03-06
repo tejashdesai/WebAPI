@@ -57,19 +57,6 @@ namespace InsuranceWebAPI.DataLayer.GenericRepository
         }
 
         /// <summary>
-        /// Generic Delete method for the entities
-        /// </summary>
-        /// <param name="entityToDelete"></param>
-        public virtual void Delete(TEntity entityToDelete)
-        {
-            if (Context.Entry(entityToDelete).State == EntityState.Detached)
-            {
-                DbSet.Attach(entityToDelete);
-            }
-            DbSet.Remove(entityToDelete);
-        }
-
-        /// <summary>
         /// Generic update method for the entities
         /// </summary>
         /// <param name="entityToUpdate"></param>
@@ -80,54 +67,22 @@ namespace InsuranceWebAPI.DataLayer.GenericRepository
         }
 
         /// <summary>
-        /// generic method to get many record on the basis of a condition.
-        /// </summary>
-        /// <param name="where"></param>
-        /// <returns></returns>
-        public virtual IEnumerable<TEntity> GetMany(Func<TEntity, bool> where)
-        {
-            return DbSet.Where(where).ToList();
-        }
-
-        /// <summary>
-        /// generic method to get many record on the basis of a condition but query able.
-        /// </summary>
-        /// <param name="where"></param>
-        /// <returns></returns>
-        public virtual IQueryable<TEntity> GetManyQueryable(Func<TEntity, bool> where)
-        {
-            return DbSet.Where(where).AsQueryable();
-        }
-
-        /// <summary>
-        /// generic get method , fetches data for the entities on the basis of condition.
-        /// </summary>
-        /// <param name="where"></param>
-        /// <returns></returns>
-        public TEntity Get(Func<TEntity, Boolean> where)
-        {
-            return DbSet.Where(where).FirstOrDefault<TEntity>();
-        }
-
-        /// <summary>
-        /// generic delete method , deletes data for the entities on the basis of condition.
-        /// </summary>
-        /// <param name="where"></param>
-        /// <returns></returns>
-        public void Delete(Func<TEntity, Boolean> where)
-        {
-            IQueryable<TEntity> objects = DbSet.Where<TEntity>(where).AsQueryable();
-            foreach (TEntity obj in objects)
-                DbSet.Remove(obj);
-        }
-
-        /// <summary>
         /// generic method to fetch all the records from db
         /// </summary>
         /// <returns></returns>
         public virtual IEnumerable<TEntity> GetAll()
         {
             return DbSet.ToList();
+        }
+
+        /// <summary>
+        /// Generic get method on the basis of id for Entities.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public virtual TEntity GetByCondition(Func<TEntity, bool> predicate)
+        {
+            return DbSet.FirstOrDefault<TEntity>(predicate);
         }
     }
 }
