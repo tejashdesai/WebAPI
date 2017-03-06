@@ -189,7 +189,6 @@
       <DependentUpon>InsuranceData.edmx</DependentUpon>
       <LastGenOutput>InsuranceData.cs</LastGenOutput>
     </Content>
-    <Content Include="Global.asax" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -233,9 +232,6 @@
     <Compile Include="Entity\PolicyHistoryDTO.cs" />
     <Compile Include="Entity\PolicyTypeDTO.cs" />
     <Compile Include="Entity\UserDTO.cs" />
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
