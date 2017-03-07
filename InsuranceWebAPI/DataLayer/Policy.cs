@@ -14,6 +14,12 @@ namespace InsuranceWebAPI.DataLayer
     
     public partial class Policy
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Policy()
+        {
+            this.PolicyHistories = new HashSet<PolicyHistory>();
+        }
+    
         public int PolicyID { get; set; }
         public string Name { get; set; }
         public Nullable<int> PolicyType { get; set; }
@@ -30,5 +36,9 @@ namespace InsuranceWebAPI.DataLayer
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public Nullable<bool> IsActive { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
+    
+        public virtual PolicyType PolicyType1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<PolicyHistory> PolicyHistories { get; set; }
     }
 }

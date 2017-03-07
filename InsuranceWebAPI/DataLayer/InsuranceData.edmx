@@ -4,12 +4,12 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="InsuranceModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="InsuranceModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Policy">
           <Key>
             <PropertyRef Name="PolicyID" />
           </Key>
-          <Property Name="PolicyID" Type="int" Nullable="false" />
+          <Property Name="PolicyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="150" />
           <Property Name="PolicyType" Type="int" />
           <Property Name="Mobile" Type="varchar" MaxLength="15" />
@@ -30,8 +30,8 @@
           <Key>
             <PropertyRef Name="PolicyHistoryID" />
           </Key>
-          <Property Name="PolicyHistoryID" Type="int" Nullable="false" />
-          <Property Name="PolicyID" Type="int" />
+          <Property Name="PolicyHistoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PolicyID" Type="int" Nullable="false" />
           <Property Name="PolicyNumber" Type="varchar" MaxLength="50" />
           <Property Name="PolicyAmount" Type="decimal" Precision="18" Scale="2" />
           <Property Name="IsCurrent" Type="bit" />
@@ -44,7 +44,7 @@
           <Key>
             <PropertyRef Name="PolicyTypeID" />
           </Key>
-          <Property Name="PolicyTypeID" Type="int" Nullable="false" />
+          <Property Name="PolicyTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PolicyType" Type="varchar" MaxLength="150" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="ModifiedDate" Type="datetime" />
@@ -53,27 +53,72 @@
           <Key>
             <PropertyRef Name="UserID" />
           </Key>
-          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserName" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="50" />
           <Property Name="Salt" Type="varchar" MaxLength="50" />
         </EntityType>
+        <Association Name="FK_Policy_PolicyType">
+          <End Role="PolicyType" Type="Self.PolicyType" Multiplicity="0..1" />
+          <End Role="Policy" Type="Self.Policy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PolicyType">
+              <PropertyRef Name="PolicyTypeID" />
+            </Principal>
+            <Dependent Role="Policy">
+              <PropertyRef Name="PolicyType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PolicyHistory_Policy">
+          <End Role="Policy" Type="Self.Policy" Multiplicity="1" />
+          <End Role="PolicyHistory" Type="Self.PolicyHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Policy">
+              <PropertyRef Name="PolicyID" />
+            </Principal>
+            <Dependent Role="PolicyHistory">
+              <PropertyRef Name="PolicyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="InsuranceModelStoreContainer">
           <EntitySet Name="Policy" EntityType="Self.Policy" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PolicyHistory" EntityType="Self.PolicyHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PolicyType" EntityType="Self.PolicyType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Policy_PolicyType" Association="Self.FK_Policy_PolicyType">
+            <End Role="PolicyType" EntitySet="PolicyType" />
+            <End Role="Policy" EntitySet="Policy" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PolicyHistory_Policy" Association="Self.FK_PolicyHistory_Policy">
+            <End Role="Policy" EntitySet="Policy" />
+            <End Role="PolicyHistory" EntitySet="PolicyHistory" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="InsuranceModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="InsuranceEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Policies" EntityType="InsuranceModel.Policy" />
+          <EntitySet Name="PolicyHistories" EntityType="InsuranceModel.PolicyHistory" />
+          <EntitySet Name="PolicyTypes" EntityType="InsuranceModel.PolicyType" />
+          <EntitySet Name="Users" EntityType="InsuranceModel.User" />
+          <AssociationSet Name="FK_Policy_PolicyType" Association="InsuranceModel.FK_Policy_PolicyType">
+            <End Role="PolicyType" EntitySet="PolicyTypes" />
+            <End Role="Policy" EntitySet="Policies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PolicyHistory_Policy" Association="InsuranceModel.FK_PolicyHistory_Policy">
+            <End Role="Policy" EntitySet="Policies" />
+            <End Role="PolicyHistory" EntitySet="PolicyHistories" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="Policy">
           <Key>
             <PropertyRef Name="PolicyID" />
           </Key>
-          <Property Name="PolicyID" Type="Int32" Nullable="false" />
+          <Property Name="PolicyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="PolicyType" Type="Int32" />
           <Property Name="Mobile" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
@@ -89,13 +134,15 @@
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="IsActive" Type="Boolean" />
           <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="PolicyType1" Relationship="InsuranceModel.FK_Policy_PolicyType" FromRole="Policy" ToRole="PolicyType" />
+          <NavigationProperty Name="PolicyHistories" Relationship="InsuranceModel.FK_PolicyHistory_Policy" FromRole="Policy" ToRole="PolicyHistory" />
         </EntityType>
         <EntityType Name="PolicyHistory">
           <Key>
             <PropertyRef Name="PolicyHistoryID" />
           </Key>
-          <Property Name="PolicyHistoryID" Type="Int32" Nullable="false" />
-          <Property Name="PolicyID" Type="Int32" />
+          <Property Name="PolicyHistoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PolicyID" Type="Int32" Nullable="false" />
           <Property Name="PolicyNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="PolicyAmount" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="IsCurrent" Type="Boolean" />
@@ -103,31 +150,51 @@
           <Property Name="EndDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
           <Property Name="IsDeleted" Type="Boolean" />
+          <NavigationProperty Name="Policy" Relationship="InsuranceModel.FK_PolicyHistory_Policy" FromRole="PolicyHistory" ToRole="Policy" />
         </EntityType>
         <EntityType Name="PolicyType">
           <Key>
             <PropertyRef Name="PolicyTypeID" />
           </Key>
-          <Property Name="PolicyTypeID" Type="Int32" Nullable="false" />
+          <Property Name="PolicyTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PolicyType1" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="ModifiedDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Policies" Relationship="InsuranceModel.FK_Policy_PolicyType" FromRole="PolicyType" ToRole="Policy" />
         </EntityType>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="UserID" />
           </Key>
-          <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Salt" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityContainer Name="InsuranceEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Policies" EntityType="Self.Policy" />
-          <EntitySet Name="PolicyHistories" EntityType="Self.PolicyHistory" />
-          <EntitySet Name="PolicyTypes" EntityType="Self.PolicyType" />
-          <EntitySet Name="Users" EntityType="Self.User" />
-        </EntityContainer>
+        <Association Name="FK_Policy_PolicyType">
+          <End Type="InsuranceModel.PolicyType" Role="PolicyType" Multiplicity="0..1" />
+          <End Type="InsuranceModel.Policy" Role="Policy" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PolicyType">
+              <PropertyRef Name="PolicyTypeID" />
+            </Principal>
+            <Dependent Role="Policy">
+              <PropertyRef Name="PolicyType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PolicyHistory_Policy">
+          <End Type="InsuranceModel.Policy" Role="Policy" Multiplicity="1" />
+          <End Type="InsuranceModel.PolicyHistory" Role="PolicyHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Policy">
+              <PropertyRef Name="PolicyID" />
+            </Principal>
+            <Dependent Role="PolicyHistory">
+              <PropertyRef Name="PolicyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -137,57 +204,57 @@
           <EntitySetMapping Name="Policies">
             <EntityTypeMapping TypeName="InsuranceModel.Policy">
               <MappingFragment StoreEntitySet="Policy">
-                <ScalarProperty Name="PolicyID" ColumnName="PolicyID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="PolicyType" ColumnName="PolicyType" />
-                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
-                <ScalarProperty Name="Mobile1" ColumnName="Mobile1" />
-                <ScalarProperty Name="Address1" ColumnName="Address1" />
-                <ScalarProperty Name="Address2" ColumnName="Address2" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="AdditionalName1" ColumnName="AdditionalName1" />
-                <ScalarProperty Name="AdditionalName2" ColumnName="AdditionalName2" />
-                <ScalarProperty Name="AdditionalName3" ColumnName="AdditionalName3" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="AdditionalName3" ColumnName="AdditionalName3" />
+                <ScalarProperty Name="AdditionalName2" ColumnName="AdditionalName2" />
+                <ScalarProperty Name="AdditionalName1" ColumnName="AdditionalName1" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="Address1" ColumnName="Address1" />
+                <ScalarProperty Name="Mobile1" ColumnName="Mobile1" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="PolicyType" ColumnName="PolicyType" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="PolicyID" ColumnName="PolicyID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PolicyHistories">
             <EntityTypeMapping TypeName="InsuranceModel.PolicyHistory">
               <MappingFragment StoreEntitySet="PolicyHistory">
-                <ScalarProperty Name="PolicyHistoryID" ColumnName="PolicyHistoryID" />
-                <ScalarProperty Name="PolicyID" ColumnName="PolicyID" />
-                <ScalarProperty Name="PolicyNumber" ColumnName="PolicyNumber" />
-                <ScalarProperty Name="PolicyAmount" ColumnName="PolicyAmount" />
-                <ScalarProperty Name="IsCurrent" ColumnName="IsCurrent" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
-                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
-                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
                 <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="IsCurrent" ColumnName="IsCurrent" />
+                <ScalarProperty Name="PolicyAmount" ColumnName="PolicyAmount" />
+                <ScalarProperty Name="PolicyNumber" ColumnName="PolicyNumber" />
+                <ScalarProperty Name="PolicyID" ColumnName="PolicyID" />
+                <ScalarProperty Name="PolicyHistoryID" ColumnName="PolicyHistoryID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PolicyTypes">
             <EntityTypeMapping TypeName="InsuranceModel.PolicyType">
               <MappingFragment StoreEntitySet="PolicyType">
-                <ScalarProperty Name="PolicyTypeID" ColumnName="PolicyTypeID" />
-                <ScalarProperty Name="PolicyType1" ColumnName="PolicyType" />
-                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
                 <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="PolicyType1" ColumnName="PolicyType" />
+                <ScalarProperty Name="PolicyTypeID" ColumnName="PolicyTypeID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="InsuranceModel.User">
               <MappingFragment StoreEntitySet="User">
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Salt" ColumnName="Salt" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

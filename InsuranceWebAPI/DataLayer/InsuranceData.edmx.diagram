@@ -5,10 +5,12 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="2ea3ab591b79468db8a20722ec2d3321" Name="Diagram1">
-        <EntityTypeShape EntityType="InsuranceModel.Policy" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="InsuranceModel.PolicyHistory" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="InsuranceModel.PolicyType" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="InsuranceModel.User" Width="1.5" PointX="2.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InsuranceModel.Policy" Width="1.5" PointX="3" PointY="1" />
+        <EntityTypeShape EntityType="InsuranceModel.PolicyHistory" Width="1.5" PointX="5.25" PointY="1.875" />
+        <EntityTypeShape EntityType="InsuranceModel.PolicyType" Width="1.5" PointX="0.75" PointY="2.25" />
+        <EntityTypeShape EntityType="InsuranceModel.User" Width="1.5" PointX="5.75" PointY="5.75" />
+        <AssociationConnector Association="InsuranceModel.FK_Policy_PolicyType" />
+        <AssociationConnector Association="InsuranceModel.FK_PolicyHistory_Policy" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

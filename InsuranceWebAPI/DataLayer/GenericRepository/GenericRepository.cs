@@ -84,5 +84,15 @@ namespace InsuranceWebAPI.DataLayer.GenericRepository
         {
             return DbSet.FirstOrDefault<TEntity>(predicate);
         }
+
+        /// <summary>
+        /// generic method to get many record on the basis of a condition but query able.
+        /// </summary>
+        /// <param name="where"></param>
+        /// <returns></returns>
+        public virtual IQueryable<TEntity> GetManyQueryable(Func<TEntity, bool> where)
+        {
+            return DbSet.Where(where).AsQueryable();
+        }
     }
 }

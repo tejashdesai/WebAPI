@@ -14,9 +14,18 @@ namespace InsuranceWebAPI.DataLayer
     
     public partial class PolicyType
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public PolicyType()
+        {
+            this.Policies = new HashSet<Policy>();
+        }
+    
         public int PolicyTypeID { get; set; }
         public string PolicyType1 { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Policy> Policies { get; set; }
     }
 }

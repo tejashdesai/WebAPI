@@ -17,4 +17,16 @@ namespace InsuranceWebAPI.Entity
         public DateTime? ModifiedDate { get; set; }
         public bool? IsDeleted { get; set; }
     }
+
+    public class CurrentPolicyModel
+    {
+        public int PolicyHistoryID { get; set; }
+        public int PolicyID { get; set; }
+        public DateTime? EndDate { get; set; }
+        public string PolicyNumber { get; set; }
+        public string Mobile { get; set; }
+        public string Email { get; set; }
+        public string PolicyType { get; set; }
+        public DateTime? StartDate { get; set; }
+    }
 }

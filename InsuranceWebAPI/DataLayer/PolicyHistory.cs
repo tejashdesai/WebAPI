@@ -15,7 +15,7 @@ namespace InsuranceWebAPI.DataLayer
     public partial class PolicyHistory
     {
         public int PolicyHistoryID { get; set; }
-        public Nullable<int> PolicyID { get; set; }
+        public int PolicyID { get; set; }
         public string PolicyNumber { get; set; }
         public Nullable<decimal> PolicyAmount { get; set; }
         public Nullable<bool> IsCurrent { get; set; }
@@ -23,5 +23,7 @@ namespace InsuranceWebAPI.DataLayer
         public Nullable<System.DateTime> EndDate { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public Nullable<bool> IsDeleted { get; set; }
+    
+        public virtual Policy Policy { get; set; }
     }
 }
