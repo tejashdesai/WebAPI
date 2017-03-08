@@ -9,7 +9,7 @@ namespace InsuranceWebAPI.BusinessLayer.Interface
 {
     public interface IPolicyService
     {
-        PolicyDTO GetPolicyById(int policyId);
+        ModifyPolicy GetPolicyById(int policyId);
         IEnumerable<PolicyDTO> GetAllPolicy();
         int CreatePolicy(PolicyDTO policyEntity);
         bool UpdatePolicy(int policyId, PolicyDTO policyEntity);

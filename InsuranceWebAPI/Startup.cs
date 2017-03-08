@@ -54,9 +54,9 @@ namespace InsuranceWebAPI
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
             IUserService _repo = new UserService();
             bool user = _repo.FindUser(context.UserName, context.Password);
-            if (user)
+            if (!user)
             {
-                context.SetError("invalid_grant", "The user name or password is incorrect.");
+                context.SetError("invalid_grant", "The username or password is incorrect.");
                 return;
             }
 

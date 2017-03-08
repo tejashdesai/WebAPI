@@ -26,7 +26,12 @@ namespace InsuranceWebAPI.BusinessLayer.Service
         {
             var policyHistory = new PolicyHistory
             {
-                //ProductName = productEntity.ProductName
+                EndDate = policyHistoryEntity.EndDate,
+                IsCurrent = true,
+                PolicyAmount = policyHistoryEntity.PolicyAmount,
+                PolicyID = policyHistoryEntity.PolicyID.Value,
+                PolicyNumber = policyHistoryEntity.PolicyNumber,
+                StartDate = policyHistoryEntity.StartDate
             };
             _unitOfWork.PolicyHistoryRepository.Insert(policyHistory);
             _unitOfWork.Save();
@@ -36,42 +41,39 @@ namespace InsuranceWebAPI.BusinessLayer.Service
         public bool DeletePolicyHistory(int policyHistoryId)
         {
             var success = false;
-            if (policyHistoryId > 0)
+            var policyHistory = _unitOfWork.PolicyHistoryRepository.GetByID(policyHistoryId);
+            if (policyHistory != null)
             {
-                var policyHistory = _unitOfWork.PolicyHistoryRepository.GetByID(policyHistoryId);
-                if (policyHistory != null)
-                {
+                policyHistory.IsDeleted = true;
 
-                    _unitOfWork.PolicyHistoryRepository.Delete(policyHistory);
-                    _unitOfWork.Save();
-                    success = true;
-                }
+                _unitOfWork.PolicyHistoryRepository.Update(policyHistory);
+                _unitOfWork.Save();
+                success = true;
             }
             return success;
         }
 
-        public IEnumerable<PolicyHistoryDTO> GetAllPolicyHistory()
-        {
-            var policyHistories = _unitOfWork.PolicyHistoryRepository.GetAll().ToList();
-            if (policyHistories.Any())
-            {
-                //Mapper.CreateMap<Product, ProductEntity>();
-                var policyHistoryModel = Mapper.Map<List<PolicyHistory>, List<PolicyHistoryDTO>>(policyHistories);
-                return policyHistoryModel;
-            }
-            return null;
-        }
-
-        public IEnumerable<CurrentPolicyModel> GetCurrentPolicy()
+        public IEnumerable<CurrentPolicyModel> GetCurrentPolicy(bool isCurrent, bool isDashboard)
         {
             try
             {
-                var policyHistories = _unitOfWork.PolicyHistoryRepository
-                .GetManyQueryable(ph => ph.IsCurrent.HasValue ? ph.IsCurrent.Value : false).ToList();
+                var policyHistories = new List<PolicyHistory>();
+                if (isDashboard)
+                {
+                    policyHistories = _unitOfWork.PolicyHistoryRepository
+               .GetManyQueryable(ph => ph.EndDate <= DateTime.Now.AddDays(30) && ph.EndDate >= DateTime.Now).ToList();
+                }
+                else
+                {
+                    policyHistories = _unitOfWork.PolicyHistoryRepository
+               .GetManyQueryable(ph => ph.IsCurrent.HasValue ? ph.IsCurrent.Value : false).ToList();
+                }
+
                 if (policyHistories.Any())
                 {
                     var currentPolicy = policyHistories.Select(x => new CurrentPolicyModel
                     {
+                        Name = x.Policy.Name,
                         Email = x.Policy.Email,
                         EndDate = x.EndDate,
                         Mobile = x.Policy.Mobile,
@@ -85,9 +87,9 @@ namespace InsuranceWebAPI.BusinessLayer.Service
                 }
                 return null;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
 
         }
@@ -100,7 +102,14 @@ namespace InsuranceWebAPI.BusinessLayer.Service
                 var policyHistory = _unitOfWork.PolicyHistoryRepository.GetByID(policyHistoryId);
                 if (policyHistory != null)
                 {
-                    //product.ProductName = productEntity.ProductName;
+                    policyHistory.EndDate = policyHistoryEntity.EndDate;
+                    policyHistory.IsCurrent = policyHistoryEntity.StartDate <= DateTime.Now && policyHistoryEntity.EndDate > DateTime.Now ? true : false;
+                    policyHistory.PolicyAmount = policyHistoryEntity.PolicyAmount;
+                    policyHistory.PolicyID = policyHistoryEntity.PolicyID.Value;
+                    policyHistory.PolicyNumber = policyHistoryEntity.PolicyNumber;
+                    policyHistory.StartDate = policyHistoryEntity.StartDate;
+                    policyHistory.ModifiedDate = DateTime.Now;
+
                     _unitOfWork.PolicyHistoryRepository.Update(policyHistory);
                     _unitOfWork.Save();
                     success = true;

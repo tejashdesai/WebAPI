@@ -23,7 +23,7 @@ namespace InsuranceWebAPI.Controllers
         [Route("Register")]
         public IHttpActionResult Register(UserDTO userModel)
         {
-            if (string.IsNullOrEmpty(userModel.UserName) || string.IsNullOrEmpty(userModel.Password))
+            if (userModel == null || string.IsNullOrEmpty(userModel.UserName) || string.IsNullOrEmpty(userModel.Password))
             {
                 return BadRequest("Please provide username and password");
             }

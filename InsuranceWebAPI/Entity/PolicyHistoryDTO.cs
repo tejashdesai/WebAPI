@@ -28,5 +28,6 @@ namespace InsuranceWebAPI.Entity
         public string Email { get; set; }
         public string PolicyType { get; set; }
         public DateTime? StartDate { get; set; }
+        public string Name { get; set; }
     }
 }

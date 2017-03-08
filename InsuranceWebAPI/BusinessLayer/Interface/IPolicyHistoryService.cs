@@ -9,10 +9,9 @@ namespace InsuranceWebAPI.BusinessLayer.Interface
 {
     public interface IPolicyHistoryService
     {
-        IEnumerable<PolicyHistoryDTO> GetAllPolicyHistory();
         int CreatePolicyHistory(PolicyHistoryDTO policyHistoryEntity);
         bool UpdatePolicyHistory(int policyHistoryId, PolicyHistoryDTO policyHistoryEntity);
         bool DeletePolicyHistory(int policyHistoryId);
-        IEnumerable<CurrentPolicyModel> GetCurrentPolicy();
+        IEnumerable<CurrentPolicyModel> GetCurrentPolicy(bool isCurrent = true, bool isDashboard = false);
     }
 }
