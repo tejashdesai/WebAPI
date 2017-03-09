@@ -6,4 +6,7 @@ http://stackoverflow.com/questions/24340088/owin-web-api-2-adding-additional-log
 https://levelnis.co.uk/blog/how-can-you-use-webapi-to-authenticate-users-of-your-mvc-application
 
 
+https://shazwazza.com/post/uploading-files-and-json-data-in-the-same-request-with-angular-js/
+http://www.codeguru.com/csharp/.net/uploading-files-asynchronously-using-asp.net-web-api.htm
+
 http://ndv71j.axshare.com/#p=addpolicy
