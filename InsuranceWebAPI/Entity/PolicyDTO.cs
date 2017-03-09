@@ -44,6 +44,11 @@ namespace InsuranceWebAPI.Entity
         public DateTime? EndDate { get; set; }
         public DateTime? StartDate { get; set; }
         public decimal? PolicyAmount { get; set; }
+
+        public static explicit operator NewPolicy(string v)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class ModifyPolicy

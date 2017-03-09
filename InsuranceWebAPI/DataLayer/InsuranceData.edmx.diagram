@@ -11,6 +11,8 @@
         <EntityTypeShape EntityType="InsuranceModel.User" Width="1.5" PointX="5.75" PointY="5.75" />
         <AssociationConnector Association="InsuranceModel.FK_Policy_PolicyType" />
         <AssociationConnector Association="InsuranceModel.FK_PolicyHistory_Policy" />
+        <EntityTypeShape EntityType="InsuranceModel.Document" Width="1.5" PointX="5.25" PointY="8.5" />
+        <AssociationConnector Association="InsuranceModel.FK_Documents_Policy" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

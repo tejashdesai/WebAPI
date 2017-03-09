@@ -18,6 +18,7 @@ namespace InsuranceWebAPI.DataLayer
         public Policy()
         {
             this.PolicyHistories = new HashSet<PolicyHistory>();
+            this.Documents = new HashSet<Document>();
         }
     
         public int PolicyID { get; set; }
@@ -40,5 +41,7 @@ namespace InsuranceWebAPI.DataLayer
         public virtual PolicyType PolicyType1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PolicyHistory> PolicyHistories { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Document> Documents { get; set; }
     }
 }

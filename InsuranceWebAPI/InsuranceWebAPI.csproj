@@ -196,13 +196,18 @@
     <Compile Include="BusinessLayer\Common.cs" />
     <Compile Include="BusinessLayer\Interface\IPolicyHistoryService.cs" />
     <Compile Include="BusinessLayer\Interface\IPolicyService.cs" />
+    <Compile Include="BusinessLayer\Interface\IDocumentService.cs" />
     <Compile Include="BusinessLayer\Interface\IUserService.cs" />
     <Compile Include="BusinessLayer\Service\PolicyHistoryService.cs" />
     <Compile Include="BusinessLayer\Service\PolicyService.cs" />
+    <Compile Include="BusinessLayer\Service\DocumentService.cs" />
     <Compile Include="BusinessLayer\Service\UserService.cs" />
     <Compile Include="Controllers\PolicyController.cs" />
     <Compile Include="Controllers\PolicyHistoryController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="DataLayer\Document.cs">
+      <DependentUpon>InsuranceData.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataLayer\GenericRepository\GenericRepository.cs" />
     <Compile Include="DataLayer\InsuranceData.Context.cs">
       <AutoGen>True</AutoGen>

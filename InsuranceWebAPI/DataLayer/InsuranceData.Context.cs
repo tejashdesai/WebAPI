@@ -29,5 +29,6 @@ namespace InsuranceWebAPI.DataLayer
         public virtual DbSet<PolicyHistory> PolicyHistories { get; set; }
         public virtual DbSet<PolicyType> PolicyTypes { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Document> Documents { get; set; }
     }
 }

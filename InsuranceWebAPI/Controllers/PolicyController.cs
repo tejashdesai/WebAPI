@@ -3,9 +3,12 @@ using InsuranceWebAPI.BusinessLayer.Service;
 using InsuranceWebAPI.Entity;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 
 namespace InsuranceWebAPI.Controllers
@@ -14,11 +17,13 @@ namespace InsuranceWebAPI.Controllers
     {
         private readonly IPolicyService _policyServices;
         private readonly IPolicyHistoryService _policyHistoryServices;
+        private readonly IDocumentService _documentServices;
 
         public PolicyController()
         {
             _policyServices = new PolicyService();
             _policyHistoryServices = new PolicyHistoryService();
+            _documentServices = new DocumentService();
         }
 
         [Authorize]
@@ -47,30 +52,46 @@ namespace InsuranceWebAPI.Controllers
         [Authorize]
         [Route("savepolicy")]
         [HttpPost]
-        public HttpResponseMessage SavePolicy([FromBody] NewPolicy newPolicy)
+        public async Task<HttpResponseMessage> SavePolicy()
         {
+            if (!Request.Content.IsMimeMultipartContent())
+            {
+                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
+            }
+
+            var root = HttpContext.Current.Server.MapPath("~/Documents");
+            Directory.CreateDirectory(root);
+            var provider = new MultipartFormDataStreamProvider(root);
+            var result = await Request.Content.ReadAsMultipartAsync(provider);
+            if (result.FormData["policy"] == null)
+            {
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            }
+            var policy = (NewPolicy)result.FormData["policy"];
+
             var policyEntity = new PolicyDTO
             {
-                AdditionalName1 = newPolicy.AdditionalName1,
-                AdditionalName2 = newPolicy.AdditionalName2,
-                AdditionalName3 = newPolicy.AdditionalName3,
-                Address1 = newPolicy.Address1,
-                Address2 = newPolicy.Address2,
-                City = newPolicy.City,
+                AdditionalName1 = policy.AdditionalName1,
+                AdditionalName2 = policy.AdditionalName2,
+                AdditionalName3 = policy.AdditionalName3,
+                Address1 = policy.Address1,
+                Address2 = policy.Address2,
+                City = policy.City,
                 CreatedDate = DateTime.Now,
-                Email = newPolicy.Email,
-                Mobile = newPolicy.Mobile,
-                Mobile1 = newPolicy.Mobile1,
-                Name = newPolicy.Name,
-                PolicyType = newPolicy.PolicyType
+                Email = policy.Email,
+                Mobile = policy.Mobile,
+                Mobile1 = policy.Mobile1,
+                Name = policy.Name,
+                PolicyType = policy.PolicyType
             };
+
             var policyRes = 0;
-            if (newPolicy.PolicyID > 0)
+            if (policy.PolicyID > 0)
             {
-                var res = _policyServices.UpdatePolicy(newPolicy.PolicyID, policyEntity);
+                var res = _policyServices.UpdatePolicy(policy.PolicyID, policyEntity);
                 if (res)
                 {
-                    policyRes = newPolicy.PolicyID;
+                    policyRes = policy.PolicyID;
                 }
             }
             else
@@ -82,29 +103,39 @@ namespace InsuranceWebAPI.Controllers
             {
                 var policyHistory = new PolicyHistoryDTO
                 {
-                    EndDate = newPolicy.EndDate,
+                    EndDate = policy.EndDate,
                     IsCurrent = true,
-                    PolicyAmount = newPolicy.PolicyAmount,
+                    PolicyAmount = policy.PolicyAmount,
                     PolicyID = policyRes,
-                    PolicyNumber = newPolicy.PolicyNumber,
-                    StartDate = newPolicy.StartDate
+                    PolicyNumber = policy.PolicyNumber,
+                    StartDate = policy.StartDate
                 };
                 var policyHistoryRes = 0;
-                if (newPolicy.PolicyHistoryID > 0)
+                if (policy.PolicyHistoryID > 0)
                 {
                     policyHistoryRes = _policyHistoryServices.CreatePolicyHistory(policyHistory);
                 }
                 else
                 {
-                    var res = _policyHistoryServices.UpdatePolicyHistory(newPolicy.PolicyHistoryID, policyHistory);
+                    var res = _policyHistoryServices.UpdatePolicyHistory(policy.PolicyHistoryID, policyHistory);
                     if (res)
                     {
-                        policyHistoryRes = newPolicy.PolicyHistoryID;
+                        policyHistoryRes = policy.PolicyHistoryID;
                     }
                 }
 
-                if (policyRes > 0)
+                if (policyHistoryRes > 0)
                 {
+                    //get the files
+                    foreach (var file in result.FileData)
+                    {
+                        FileInfo finfo = new FileInfo(file.LocalFileName);
+                        //File.Move(finfo.FullName,
+                        //    Path.Combine(root, file.Headers.ContentDisposition.FileName.Replace("\"", "")));
+
+                        _documentServices.CreateDocument(policyRes,finfo.FullName);
+                    }
+
                     return Request.CreateResponse(HttpStatusCode.OK, policyRes);
                 }
                 else
@@ -113,6 +144,7 @@ namespace InsuranceWebAPI.Controllers
                     return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error while saving policy history.");
                 }
             }
+
             return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error while saving policy.");
 
         }

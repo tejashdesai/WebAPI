@@ -5,6 +5,14 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="InsuranceModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Documents">
+          <Key>
+            <PropertyRef Name="DocumentId" />
+          </Key>
+          <Property Name="DocumentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DocumentName" Type="varchar" MaxLength="100" />
+          <Property Name="PolicyId" Type="int" />
+        </EntityType>
         <EntityType Name="Policy">
           <Key>
             <PropertyRef Name="PolicyID" />
@@ -58,6 +66,18 @@
           <Property Name="Password" Type="varchar" MaxLength="50" />
           <Property Name="Salt" Type="varchar" MaxLength="50" />
         </EntityType>
+        <Association Name="FK_Documents_Policy">
+          <End Role="Policy" Type="Self.Policy" Multiplicity="0..1" />
+          <End Role="Documents" Type="Self.Documents" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Policy">
+              <PropertyRef Name="PolicyID" />
+            </Principal>
+            <Dependent Role="Documents">
+              <PropertyRef Name="PolicyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Policy_PolicyType">
           <End Role="PolicyType" Type="Self.PolicyType" Multiplicity="0..1" />
           <End Role="Policy" Type="Self.Policy" Multiplicity="*" />
@@ -83,10 +103,15 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="InsuranceModelStoreContainer">
+          <EntitySet Name="Documents" EntityType="Self.Documents" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Policy" EntityType="Self.Policy" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PolicyHistory" EntityType="Self.PolicyHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PolicyType" EntityType="Self.PolicyType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Documents_Policy" Association="Self.FK_Documents_Policy">
+            <End Role="Policy" EntitySet="Policy" />
+            <End Role="Documents" EntitySet="Documents" />
+          </AssociationSet>
           <AssociationSet Name="FK_Policy_PolicyType" Association="Self.FK_Policy_PolicyType">
             <End Role="PolicyType" EntitySet="PolicyType" />
             <End Role="Policy" EntitySet="Policy" />
@@ -113,6 +138,11 @@
             <End Role="Policy" EntitySet="Policies" />
             <End Role="PolicyHistory" EntitySet="PolicyHistories" />
           </AssociationSet>
+          <EntitySet Name="Documents" EntityType="InsuranceModel.Document" />
+          <AssociationSet Name="FK_Documents_Policy" Association="InsuranceModel.FK_Documents_Policy">
+            <End Role="Policy" EntitySet="Policies" />
+            <End Role="Document" EntitySet="Documents" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Policy">
           <Key>
@@ -136,6 +166,7 @@
           <Property Name="IsDeleted" Type="Boolean" />
           <NavigationProperty Name="PolicyType1" Relationship="InsuranceModel.FK_Policy_PolicyType" FromRole="Policy" ToRole="PolicyType" />
           <NavigationProperty Name="PolicyHistories" Relationship="InsuranceModel.FK_PolicyHistory_Policy" FromRole="Policy" ToRole="PolicyHistory" />
+          <NavigationProperty Name="Documents" Relationship="InsuranceModel.FK_Documents_Policy" FromRole="Policy" ToRole="Document" />
         </EntityType>
         <EntityType Name="PolicyHistory">
           <Key>
@@ -192,6 +223,27 @@
             </Principal>
             <Dependent Role="PolicyHistory">
               <PropertyRef Name="PolicyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Document">
+          <Key>
+            <PropertyRef Name="DocumentId" />
+          </Key>
+          <Property Name="DocumentId" Type="Int32" Nullable="false" />
+          <Property Name="PolicyId" Type="Int32" />
+          <NavigationProperty Name="Policy" Relationship="InsuranceModel.FK_Documents_Policy" FromRole="Document" ToRole="Policy" />
+          <Property Name="DocumentName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_Documents_Policy">
+          <End Type="InsuranceModel.Policy" Role="Policy" Multiplicity="0..1" />
+          <End Type="InsuranceModel.Document" Role="Document" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Policy">
+              <PropertyRef Name="PolicyID" />
+            </Principal>
+            <Dependent Role="Document">
+              <PropertyRef Name="PolicyId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -255,6 +307,15 @@
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Documents">
+            <EntityTypeMapping TypeName="InsuranceModel.Document">
+              <MappingFragment StoreEntitySet="Documents">
+                <ScalarProperty Name="DocumentName" ColumnName="DocumentName" />
+                <ScalarProperty Name="PolicyId" ColumnName="PolicyId" />
+                <ScalarProperty Name="DocumentId" ColumnName="DocumentId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
