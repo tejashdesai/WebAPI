@@ -253,6 +253,7 @@
     <Content Include="DataLayer\InsuranceData.edmx.diagram">
       <DependentUpon>InsuranceData.edmx</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\insurance.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

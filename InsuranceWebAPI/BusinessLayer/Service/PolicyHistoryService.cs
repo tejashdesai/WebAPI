@@ -81,7 +81,8 @@ namespace InsuranceWebAPI.BusinessLayer.Service
                         PolicyID = x.PolicyID,
                         PolicyNumber = x.PolicyNumber,
                         PolicyType = x.Policy.PolicyType1.PolicyType1,
-                        StartDate = x.StartDate
+                        StartDate = x.StartDate,
+                        Month = x.StartDate.Value.Month
                     }).ToList();
                     return currentPolicy;
                 }
@@ -116,6 +117,26 @@ namespace InsuranceWebAPI.BusinessLayer.Service
                 }
             }
             return success;
+        }
+
+        public IEnumerable<SummaryModel> GetSummary()
+        {
+            try
+            {
+                var summary = new List<SummaryModel>();
+
+                summary = (from month in Enumerable.Range(1, 12)
+                           let key = month
+                           join policyHistory in _unitOfWork.PolicyHistoryRepository.GetManyQueryable(ph => ph.IsCurrent.HasValue ? ph.IsCurrent.Value : false)
+                           on key equals policyHistory.StartDate.Value.Month into g
+                           select new SummaryModel { Month = key, Count = g.Count() }).ToList();
+
+                return summary;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

@@ -66,6 +66,29 @@ namespace InsuranceWebAPI.Controllers
         }
 
         [Authorize]
+        [Route("summary")]
+        [HttpGet]
+        public HttpResponseMessage getDashboardSummary()
+        {
+            try
+            {
+                var summary = _policyHistoryServices.GetSummary();
+                if (summary != null)
+                {
+                    //var policyHistoryEntities = policyHistory as List<CurrentPolicyModel> ?? policyHistory.ToList();
+                    //if (policyHistoryEntities.Any())
+                    return Request.CreateResponse(HttpStatusCode.OK, summary);
+                }
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No current policy found");
+            }
+            catch (System.Exception ex)
+            {
+                return Request.CreateErrorResponse(System.Net.HttpStatusCode.InternalServerError,
+                    ex.Message);
+            }
+        }
+
+        [Authorize]
         [Route("deletehistory/{id}")]
         [HttpGet]
         public HttpResponseMessage DeletePolicyHistory(int id)

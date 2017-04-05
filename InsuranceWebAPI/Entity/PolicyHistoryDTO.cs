@@ -29,5 +29,12 @@ namespace InsuranceWebAPI.Entity
         public string PolicyType { get; set; }
         public DateTime? StartDate { get; set; }
         public string Name { get; set; }
+        public int Month { get; set; }
+    }
+
+    public class SummaryModel
+    {
+        public int Month { get; set; }
+        public int? Count { get; set; }
     }
 }
