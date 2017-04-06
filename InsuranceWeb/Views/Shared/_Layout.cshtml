@@ -1,0 +1,18 @@
+﻿<!DOCTYPE html>
+<html ng-app="insuranceApp">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/css/core", "~/css/app")
+</head>
+
+<body ng-controller="AppController as app">
+    <div id="loading-bar-container"></div>
+    @RenderBody() 
+    @Scripts.Render("~/script/core")
+    @Scripts.Render("~/script/app")
+</body>
+
+</html>
