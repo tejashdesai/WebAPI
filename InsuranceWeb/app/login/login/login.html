@@ -1,0 +1,18 @@
+<div class="container">
+    <div class="row">
+        <form name="login.frmLogin" novalidate ng-submit="login.frmLogin.$valid && login.loginUser()">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" name="username" ng-model="login.userData.UserName" required>
+                <span class="text-danger" ng-show="login.frmLogin.$submitted && login.frmLogin.username.$invalid">Please enter username</span>
+            </div>
+            <div class="form-group">
+                <label for="Password">Password</label>
+                <input type="password" class="form-control" name="password" ng-model="login.userData.Password" required>
+                <span class="text-danger" ng-show="login.frmLogin.$submitted && login.frmLogin.password.$invalid">Please enter password</span>
+            </div>
+            <p class="text-danger" ng-if="login.invalidUser">{{login.invalidMessage}}</p>
+            <button type="submit" class="btn btn-info">Login</button>
+        </form>
+    </div>
+</div>
