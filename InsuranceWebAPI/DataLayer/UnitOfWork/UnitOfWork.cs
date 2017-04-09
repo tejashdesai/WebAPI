@@ -16,6 +16,7 @@ namespace InsuranceWebAPI.DataLayer.UnitOfWork
         private GenericRepository<PolicyHistory> _policyHistoryRepository;
         private GenericRepository<PolicyType> _policyTypeRepository;
         private GenericRepository<Document> _documentsRepository;
+        private GenericRepository<Setting> _settingRepository;
 
         public UnitOfWork()
         {
@@ -84,6 +85,19 @@ namespace InsuranceWebAPI.DataLayer.UnitOfWork
                 if (this._documentsRepository == null)
                     this._documentsRepository = new GenericRepository<Document>(_context);
                 return _documentsRepository;
+            }
+        }
+
+        /// <summary>
+        /// Get/Set Property for setting repository.
+        /// </summary>
+        public GenericRepository<Setting> SettingRepository
+        {
+            get
+            {
+                if (this._settingRepository == null)
+                    this._settingRepository = new GenericRepository<Setting>(_context);
+                return _settingRepository;
             }
         }
 

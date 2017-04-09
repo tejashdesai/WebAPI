@@ -13,10 +13,12 @@ namespace InsuranceWebAPI.Controllers
     public class UserController : ApiController
     {
         private readonly IUserService _userServices;
+        private readonly INotificationService _notificationServices;
 
         public UserController()
         {
             _userServices = new UserService();
+            _notificationServices = new NotificationService();
         }
 
         [AllowAnonymous]
@@ -35,5 +37,15 @@ namespace InsuranceWebAPI.Controllers
             }
             return InternalServerError();
         }
+
+        [Authorize]
+        [Route("notification/{id}")]
+        public HttpResponseMessage SendNotification(int id)
+        {
+            if (_notificationServices.SendNotification(id))
+                return Request.CreateResponse(HttpStatusCode.OK, true);
+            return Request.CreateResponse(HttpStatusCode.BadRequest, false);
+        }
+
     }
 }

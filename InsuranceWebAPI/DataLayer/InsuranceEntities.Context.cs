@@ -25,10 +25,11 @@ namespace InsuranceWebAPI.DataLayer
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Document> Documents { get; set; }
         public virtual DbSet<Policy> Policies { get; set; }
         public virtual DbSet<PolicyHistory> PolicyHistories { get; set; }
         public virtual DbSet<PolicyType> PolicyTypes { get; set; }
+        public virtual DbSet<Setting> Settings { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        public virtual DbSet<Document> Documents { get; set; }
     }
 }

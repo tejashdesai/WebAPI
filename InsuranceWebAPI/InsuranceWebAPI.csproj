@@ -179,25 +179,28 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DataLayer\InsuranceData.Context.tt">
+    <Content Include="DataLayer\InsuranceEntities.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>InsuranceData.edmx</DependentUpon>
-      <LastGenOutput>InsuranceData.Context.cs</LastGenOutput>
+      <DependentUpon>InsuranceEntities.edmx</DependentUpon>
+      <LastGenOutput>InsuranceEntities.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="DataLayer\InsuranceData.tt">
+    <Content Include="DataLayer\InsuranceEntities.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>InsuranceData.edmx</DependentUpon>
-      <LastGenOutput>InsuranceData.cs</LastGenOutput>
+      <DependentUpon>InsuranceEntities.edmx</DependentUpon>
+      <LastGenOutput>InsuranceEntities.cs</LastGenOutput>
     </Content>
+    <Content Include="EmailTemplate\Template.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="BusinessLayer\Common.cs" />
+    <Compile Include="BusinessLayer\Interface\INotificationService.cs" />
     <Compile Include="BusinessLayer\Interface\IPolicyHistoryService.cs" />
     <Compile Include="BusinessLayer\Interface\IPolicyService.cs" />
     <Compile Include="BusinessLayer\Interface\IDocumentService.cs" />
     <Compile Include="BusinessLayer\Interface\IUserService.cs" />
+    <Compile Include="BusinessLayer\Service\NotificationService.cs" />
     <Compile Include="BusinessLayer\Service\PolicyHistoryService.cs" />
     <Compile Include="BusinessLayer\Service\PolicyService.cs" />
     <Compile Include="BusinessLayer\Service\DocumentService.cs" />
@@ -206,36 +209,39 @@
     <Compile Include="Controllers\PolicyHistoryController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="DataLayer\Document.cs">
-      <DependentUpon>InsuranceData.tt</DependentUpon>
+      <DependentUpon>InsuranceEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="DataLayer\GenericRepository\GenericRepository.cs" />
-    <Compile Include="DataLayer\InsuranceData.Context.cs">
+    <Compile Include="DataLayer\InsuranceEntities.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>InsuranceData.Context.tt</DependentUpon>
+      <DependentUpon>InsuranceEntities.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataLayer\InsuranceData.cs">
+    <Compile Include="DataLayer\InsuranceEntities.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>InsuranceData.tt</DependentUpon>
+      <DependentUpon>InsuranceEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="DataLayer\InsuranceData.Designer.cs">
+    <Compile Include="DataLayer\InsuranceEntities.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>InsuranceData.edmx</DependentUpon>
+      <DependentUpon>InsuranceEntities.edmx</DependentUpon>
     </Compile>
     <Compile Include="DataLayer\Policy.cs">
-      <DependentUpon>InsuranceData.tt</DependentUpon>
+      <DependentUpon>InsuranceEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="DataLayer\PolicyHistory.cs">
-      <DependentUpon>InsuranceData.tt</DependentUpon>
+      <DependentUpon>InsuranceEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="DataLayer\PolicyType.cs">
-      <DependentUpon>InsuranceData.tt</DependentUpon>
+      <DependentUpon>InsuranceEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataLayer\Setting.cs">
+      <DependentUpon>InsuranceEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="DataLayer\UnitOfWork\UnitOfWork.cs" />
     <Compile Include="DataLayer\User.cs">
-      <DependentUpon>InsuranceData.tt</DependentUpon>
+      <DependentUpon>InsuranceEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Entity\PolicyDTO.cs" />
     <Compile Include="Entity\PolicyHistoryDTO.cs" />
@@ -246,12 +252,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <EntityDeploy Include="DataLayer\InsuranceData.edmx">
+    <EntityDeploy Include="DataLayer\InsuranceEntities.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>InsuranceData.Designer.cs</LastGenOutput>
+      <LastGenOutput>InsuranceEntities.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="DataLayer\InsuranceData.edmx.diagram">
-      <DependentUpon>InsuranceData.edmx</DependentUpon>
+    <Content Include="DataLayer\InsuranceEntities.edmx.diagram">
+      <DependentUpon>InsuranceEntities.edmx</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\insurance.pubxml" />
     <None Include="Web.Debug.config">
