@@ -15,8 +15,6 @@
                     request.cancel.resolve();
                 }
             });
-
-            //$rootScope.$state = $state
         });
 
         angular.isEmpty = function (item) {

@@ -5,7 +5,9 @@
         'ui.router',
         'ngSanitize',
         'ngStorage',
-        'ui.bootstrap'
+        'ui.bootstrap',
+        'angular.filter',
+        'ngMessages'
     ]);
 
 })();

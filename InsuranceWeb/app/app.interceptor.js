@@ -32,6 +32,9 @@
             if (rejection.status === 401) {
                 var state = $injector.get('$state');
                 state.go("login.login");
+            } else {
+                var message = $injector.get('message');
+                message.error('Error', rejection.data.message);
             }
             return $q.reject(rejection);
         };

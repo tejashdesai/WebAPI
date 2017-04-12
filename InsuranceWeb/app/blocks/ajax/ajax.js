@@ -3,9 +3,9 @@
     angular.module('blocks.ajax', ['cfp.loadingBar']);
     angular.module('blocks.ajax').factory('AjaxFactory', AjaxFactory);
 
-    AjaxFactory.$inject = ['$q', '$http', '$httpParamSerializer','cfpLoadingBar'];
+    AjaxFactory.$inject = ['$q', '$http', '$httpParamSerializer', 'cfpLoadingBar'];
 
-    function AjaxFactory($q, $http, $httpParamSerializer,cfpLoadingBar) {
+    function AjaxFactory($q, $http, $httpParamSerializer, cfpLoadingBar) {
         return {
             post: post,
             get: get,
@@ -31,70 +31,74 @@
         }
 
         function post(url, data, successFunction, errorFunction) {
-             cfpLoadingBar.start();
+            cfpLoadingBar.start();
             $http.post(url, data)
                 .then(function (data) {
-                     checkPendingRequest();
+                    checkPendingRequest();
                     if (!data) {
                         errorFunction(data);
                     }
                     successFunction(data);
                 }, function (error) {
+                    checkPendingRequest();
                     errorFunction(error);
                 });
         }
 
         function get(url, data, successFunction, errorFunction) {
-             cfpLoadingBar.start();
+            cfpLoadingBar.start();
             $http.get(url, data)
                 .then(function (data) {
-                     checkPendingRequest();
+                    checkPendingRequest();
                     if (!data) {
                         errorFunction(data);
                     }
                     successFunction(data);
                 }, function (error) {
+                    checkPendingRequest();
                     errorFunction(error);
                 });
         }
 
         function put(url, data, successFunction, errorFunction) {
-             cfpLoadingBar.start();
+            cfpLoadingBar.start();
             $http.put(url, data)
                 .then(function (data) {
-                     checkPendingRequest();
+                    checkPendingRequest();
                     if (!data) {
                         errorFunction(data);
                     }
                     successFunction(data);
                 }, function (error) {
+                    checkPendingRequest();
                     errorFunction(error);
                 });
         }
 
         function ajaxDelete(url, data, successFunction, errorFunction) {
-             cfpLoadingBar.start();
+            cfpLoadingBar.start();
             $http.delete(url, data)
                 .then(function (data) {
-                     checkPendingRequest();
+                    checkPendingRequest();
                     if (!data) {
                         errorFunction(data);
                     }
                     successFunction(data);
                 }, function (error) {
+                    checkPendingRequest();
                     errorFunction(error);
                 });
         }
 
         function formEncoded(url, data, successFunction, errorFunction) {
-             cfpLoadingBar.start();
+            cfpLoadingBar.start();
             var req = {
                 method: 'POST',
                 url: url,
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                data: $httpParamSerializer(data)
+               headers: {
+                        'Content-Type': undefined
+                    },
+                data: data
             };
             $http(req)
                 .then(function (data) {

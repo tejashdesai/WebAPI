@@ -2,7 +2,46 @@
     overflow: auto;
 }
 
+html,
+body {
+    height: 100%;
+}
 
-html,body{
-        height: 100%;
+.no-padding {
+    padding: 0;
+}
+
+.custom-widget {
+    border: 0 !important;
+    margin-bottom: 20px;
+}
+
+.custom-widget .bg-primary {
+    color: #fff !important;
+    background-color: #337ab7 !important;
+}
+
+.custom-widget .table-responsive {
+    margin: 0;
+    border: 0;
+}
+
+.custom-widget .table {
+    margin: 0;
+    border: 0;
+}
+
+ul.sidebar .sidebar-list.active a {
+    color: #fff;
+    border-left: 3px solid #e99d1a;
+    text-indent: 22px;
+}
+
+.file-upload {
+    width: 31%;
+    margin-right: 5px;
+}
+
+.button-row{
+    margin-top: 10px;
 }

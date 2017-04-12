@@ -1,1 +1,57 @@
-<h1>zhome Page</h1>
+<div class="row">
+    <div class="col-lg-2 col-md-3 col-xs-4" ng-click="home.searchPolicy(item)" ng-repeat="item in home.summaryData track by $index">
+        <div class="widget" style="cursor: pointer">
+            <div class="widget-body" ng-class="classes">
+                <div class="widget-content text-center">
+                    <div class="title ">{{item.count}}</div>
+                    <div class="comment">{{home.months[item.month] }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="widget">
+            <div class="widget-header">
+                <i class="fa fa-users" ng-class="icon"></i> Expiring In Next 30 Days
+                <div class="pull-right">
+                    <input type="text" placeholder="Search" ng-model="home.search" class="form-control input-sm">
+                </div>
+            </div>
+            <div class="widget-body medium no-padding" ng-class="classes">
+                <div class="widget-content">
+                    <div class="table-responsive ">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Expires On</th>
+                                    <th>Name</th>
+                                    <th>Policy Number</th>
+                                    <th>Policy Type</th>
+                                    <th>Mobile</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in home.dashboardData | filter: home.search track by $index">
+                                    <td>{{item.endDate | date: 'dd-MMM-yyyy'}}</td>
+                                    <td>{{item.name}}</td>
+                                    <td>{{item.policyNumber}}</td>
+                                    <td>{{item.policyType}}</td>
+                                    <td>{{item.mobile}}</td>
+                                    <td><a href="javascript:void(0)">Edit</a></td>
+                                </tr>
+                                <tr ng-if="home.dashboardData.length === 0">
+                                    <td colspan="6">
+                                        <b>No records found.</b>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

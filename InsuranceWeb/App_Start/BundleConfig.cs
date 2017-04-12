@@ -20,11 +20,13 @@ namespace InsuranceWeb
                         Include("~/app/core/constant.js").
                         Include("~/app/common/service/login.js",
                                 "~/app/common/service/policy.js").
-                        Include("~/app/common/factory/user.js").
+                        Include("~/app/common/factory/user.js",
+                                "~/app/common/factory/common.js").
+                        Include("~/app/common/directive/file-upload.js").
                         Include(
                                 "~/app/app.run.js",
                                 "~/app/app.config.js",
-                                "~/app/app.interceptro.js",
+                                "~/app/app.interceptor.js",
                                 "~/app/app.controller.js").
                         Include(
                                 "~/app/login/login/login.controller.js").
@@ -35,8 +37,8 @@ namespace InsuranceWeb
                                 "~/app/main/home/home.controller.js").
                         Include(
                                 "~/app/main/policy/new/new.controller.js",
-                                "~/app/main/current/current.controller.js",
-                                "~/app/main/expired/expired.controller.js"));
+                                "~/app/main/policy/current/current.controller.js",
+                                "~/app/main/policy/expired/expired.controller.js"));
 
             bundles.Add(new ScriptBundle("~/script/core").Include(
                       "~/bower_components/jquery/dist/jquery.js",
@@ -46,9 +48,11 @@ namespace InsuranceWeb
                       "~/bower_components/angular-sanitize/angular-sanitize.js",
                       "~/bower_components/angular-ui-router/release/angular-ui-router.js",
                       "~/bower_components/ngstorage/ngStorage.js",
+                      "~/bower_components/angular-filter/dist/angular-filter.min.js",
                       "~/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js",
                       "~/bower_components/angular-toastr/dist/angular-toastr.tpls.min.js",
-                      "~/bower_components/angular-loading-bar/build/loading-bar.min.js"));
+                      "~/bower_components/angular-loading-bar/build/loading-bar.min.js",
+                      "~/bower_components/angular-messages/angular-messages.min.js"));
 
             bundles.Add(new StyleBundle("~/css/core").Include(
                       "~/bower_components/bootstrap/dist/css/bootstrap.min.css",
