@@ -1,6 +1,7 @@
 ﻿using InsuranceWebAPI.BusinessLayer.Interface;
 using InsuranceWebAPI.BusinessLayer.Service;
 using InsuranceWebAPI.Entity;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -67,31 +68,33 @@ namespace InsuranceWebAPI.Controllers
             {
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
             }
-            var policy = (NewPolicy)result.FormData["policy"];
+            dynamic policy = JsonConvert.DeserializeObject(result.FormData["policy"]);
 
             var policyEntity = new PolicyDTO
             {
-                AdditionalName1 = policy.AdditionalName1,
-                AdditionalName2 = policy.AdditionalName2,
-                AdditionalName3 = policy.AdditionalName3,
-                Address1 = policy.Address1,
-                Address2 = policy.Address2,
-                City = policy.City,
+                AdditionalName1 = policy.additionalName1,
+                AdditionalName2 = policy.additionalName2,
+                AdditionalName3 = policy.additionalName3,
+                Address1 = policy.address1,
+                Address2 = policy.address2,
+                City = policy.city,
                 CreatedDate = DateTime.Now,
-                Email = policy.Email,
-                Mobile = policy.Mobile,
-                Mobile1 = policy.Mobile1,
-                Name = policy.Name,
-                PolicyType = policy.PolicyType
+                Email = policy.email,
+                Mobile = policy.mobile,
+                Mobile1 = policy.mobile1,
+                Name = policy.name,
+                PolicyType = policy.molicyType,
+                IsActive = true,
+                IsDeleted = false
             };
 
             var policyRes = 0;
-            if (policy.PolicyID > 0)
+            if (policy.policyId > 0)
             {
-                var res = _policyServices.UpdatePolicy(policy.PolicyID, policyEntity);
+                var res = _policyServices.UpdatePolicy(policy.policyId, policyEntity);
                 if (res)
                 {
-                    policyRes = policy.PolicyID;
+                    policyRes = policy.policyId;
                 }
             }
             else
@@ -99,41 +102,58 @@ namespace InsuranceWebAPI.Controllers
                 policyRes = _policyServices.CreatePolicy(policyEntity);
             }
 
+            if (policy.deletedFiles)
+            {
+                var fileList = policy.deletedFiles.split(',');
+                foreach (var item in fileList)
+                {
+                    _documentServices.DeleteDocument(policyRes, item);
+                    File.Delete(Path.Combine(HttpContext.Current.Server.MapPath("~/Documents/" + policyRes), item));
+                }
+            }
+
             if (policyRes > 0)
             {
                 var policyHistory = new PolicyHistoryDTO
                 {
-                    EndDate = policy.EndDate,
+                    EndDate = policy.endDate,
                     IsCurrent = true,
-                    PolicyAmount = policy.PolicyAmount,
+                    PolicyAmount = policy.policyAmount,
                     PolicyID = policyRes,
-                    PolicyNumber = policy.PolicyNumber,
-                    StartDate = policy.StartDate
+                    PolicyNumber = policy.policyNumber,
+                    StartDate = policy.startDate,
+                    IsDeleted = false
                 };
                 var policyHistoryRes = 0;
-                if (policy.PolicyHistoryID > 0)
+                if (policy.policyHistoryId > 0)
                 {
-                    policyHistoryRes = _policyHistoryServices.CreatePolicyHistory(policyHistory);
+                    var res = _policyHistoryServices.UpdatePolicyHistory(policy.policyHistoryId, policyHistory);
+                    if (res)
+                    {
+                        policyHistoryRes = policy.policyHistoryId;
+                    }
                 }
                 else
                 {
-                    var res = _policyHistoryServices.UpdatePolicyHistory(policy.PolicyHistoryID, policyHistory);
-                    if (res)
-                    {
-                        policyHistoryRes = policy.PolicyHistoryID;
-                    }
+                    policyHistoryRes = _policyHistoryServices.CreatePolicyHistory(policyHistory);
                 }
 
                 if (policyHistoryRes > 0)
                 {
+                    var subDir = HttpContext.Current.Server.MapPath("~/Documents/" + policyRes);
+                    Directory.CreateDirectory(subDir);
                     //get the files
                     foreach (var file in result.FileData)
                     {
                         FileInfo finfo = new FileInfo(file.LocalFileName);
-                        //File.Move(finfo.FullName,
-                        //    Path.Combine(root, file.Headers.ContentDisposition.FileName.Replace("\"", "")));
-
-                        _documentServices.CreateDocument(policyRes,finfo.FullName);
+                        var fileName = file.Headers.ContentDisposition.FileName.Replace("\"", "");
+                        var destFile = Path.Combine(subDir, fileName);
+                        if (File.Exists(destFile))
+                        {
+                            File.Delete(destFile);
+                        }
+                        File.Move(finfo.FullName, destFile);
+                        _documentServices.CreateDocument(policyRes, fileName, destFile);
                     }
 
                     return Request.CreateResponse(HttpStatusCode.OK, policyRes);

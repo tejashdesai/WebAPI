@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace InsuranceWebAPI.BusinessLayer.Interface
 {
-    public interface IDocumentService
+    public interface ISettingsService
     {
-        int CreateDocument(int policyId, string documentName, string documentPath);
-        bool DeleteDocument(int policyId, string documentName);
+        bool UpdateSettings(SettingsDTO settingEntity);
     }
 }

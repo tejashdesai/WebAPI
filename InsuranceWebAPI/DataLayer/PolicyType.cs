@@ -21,7 +21,7 @@ namespace InsuranceWebAPI.DataLayer
         }
     
         public int PolicyTypeID { get; set; }
-        public string PolicyType1 { get; set; }
+        public string PolicyTypeName { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
     

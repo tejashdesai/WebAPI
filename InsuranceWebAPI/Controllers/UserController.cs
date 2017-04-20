@@ -1,9 +1,6 @@
 ﻿using InsuranceWebAPI.BusinessLayer.Interface;
 using InsuranceWebAPI.BusinessLayer.Service;
 using InsuranceWebAPI.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -13,11 +10,13 @@ namespace InsuranceWebAPI.Controllers
     public class UserController : ApiController
     {
         private readonly IUserService _userServices;
+        private readonly ISettingsService _settingsServices;
         private readonly INotificationService _notificationServices;
 
         public UserController()
         {
             _userServices = new UserService();
+            _settingsServices = new SettingsService();
             _notificationServices = new NotificationService();
         }
 
@@ -47,5 +46,14 @@ namespace InsuranceWebAPI.Controllers
             return Request.CreateResponse(HttpStatusCode.BadRequest, false);
         }
 
+        [Authorize]
+        [Route("updatesettings")]
+        [HttpPost]
+        public HttpResponseMessage UpdateSettings([FromBody]SettingsDTO settingsEntity)
+        {
+            if (_settingsServices.UpdateSettings(settingsEntity))
+                return Request.CreateResponse(HttpStatusCode.OK, true);
+            return Request.CreateResponse(HttpStatusCode.InternalServerError, false);
+        }
     }
 }

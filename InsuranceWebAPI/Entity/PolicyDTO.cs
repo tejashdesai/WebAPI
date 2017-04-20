@@ -67,5 +67,6 @@ namespace InsuranceWebAPI.Entity
         public string AdditionalName3 { get; set; }
 
         public List<PolicyHistoryDTO> PolicyHistory { get; set; }
+        public List<DocumentDTO> Documents { get; set; }
     }
 }

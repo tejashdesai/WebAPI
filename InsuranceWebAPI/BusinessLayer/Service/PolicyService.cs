@@ -45,7 +45,6 @@ namespace InsuranceWebAPI.BusinessLayer.Service
         }
 
         public bool DeletePolicy(int policyId)
-
         {
             var success = false;
             var policy = _unitOfWork.PolicyRepository.GetByID(policyId);
@@ -99,6 +98,13 @@ namespace InsuranceWebAPI.BusinessLayer.Service
                         PolicyHistoryID = x.PolicyHistoryID,
                         PolicyNumber = x.PolicyNumber,
                         StartDate = x.StartDate
+                    }).ToList(),
+                    Documents = policy.Documents.Select(x => new DocumentDTO
+                    {
+                        DocumentId = x.DocumentId,
+                        DocumentName = x.DocumentName,
+                        DocumentPath = x.DocumentPath,
+                        PolicyId = x.PolicyId
                     }).ToList()
                 };
                 return policyModel;

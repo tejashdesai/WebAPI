@@ -4,16 +4,16 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="e0738f66a5104c39affc3f89ecf20c28" Name="Diagram1" ZoomLevel="74">
-        <EntityTypeShape EntityType="InsuranceModel.Document" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="InsuranceModel.Policy" Width="1.5" PointX="3" PointY="1.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="InsuranceModel.PolicyHistory" Width="1.5" PointX="5.25" PointY="3.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="InsuranceModel.PolicyType" Width="1.5" PointX="0.75" PointY="2.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="InsuranceModel.Setting" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="InsuranceModel.User" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
-        <AssociationConnector Association="InsuranceModel.FK_Documents_Policy" ManuallyRouted="false" />
-        <AssociationConnector Association="InsuranceModel.FK_Policy_PolicyType" ManuallyRouted="false" />
-        <AssociationConnector Association="InsuranceModel.FK_PolicyHistory_Policy" ManuallyRouted="false" />
+      <Diagram DiagramId="606c5c59467a466cad2e37e240869ed7" Name="Diagram1" ZoomLevel="64">
+        <EntityTypeShape EntityType="InsuranceModel.Document" Width="1.5" PointX="5.25" PointY="1.125" />
+        <EntityTypeShape EntityType="InsuranceModel.Policy" Width="1.5" PointX="3" PointY="1.5" />
+        <EntityTypeShape EntityType="InsuranceModel.PolicyHistory" Width="1.5" PointX="5.25" PointY="3.625" />
+        <EntityTypeShape EntityType="InsuranceModel.PolicyType" Width="1.5" PointX="0.75" PointY="2.875" />
+        <EntityTypeShape EntityType="InsuranceModel.Setting" Width="1.5" PointX="7.75" PointY="0.75" />
+        <EntityTypeShape EntityType="InsuranceModel.User" Width="1.5" PointX="0.875" PointY="5.5" />
+        <AssociationConnector Association="InsuranceModel.FK_Documents_Policy" />
+        <AssociationConnector Association="InsuranceModel.FK_Policy_PolicyType" />
+        <AssociationConnector Association="InsuranceModel.FK_PolicyHistory_Policy" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

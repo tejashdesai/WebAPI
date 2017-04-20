@@ -80,7 +80,7 @@ namespace InsuranceWebAPI.BusinessLayer.Service
                         PolicyHistoryID = x.PolicyHistoryID,
                         PolicyID = x.PolicyID,
                         PolicyNumber = x.PolicyNumber,
-                        PolicyType = x.Policy.PolicyType1.PolicyType1,
+                        PolicyType = x.Policy.PolicyType1.PolicyTypeName,
                         StartDate = x.StartDate,
                         Month = x.StartDate.Value.Month
                     }).ToList();

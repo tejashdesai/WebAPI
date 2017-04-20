@@ -17,6 +17,7 @@ namespace InsuranceWebAPI.DataLayer
         public int DocumentId { get; set; }
         public string DocumentName { get; set; }
         public Nullable<int> PolicyId { get; set; }
+        public string DocumentPath { get; set; }
     
         public virtual Policy Policy { get; set; }
     }

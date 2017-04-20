@@ -52,11 +52,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -197,16 +197,21 @@
     <Compile Include="BusinessLayer\Common.cs" />
     <Compile Include="BusinessLayer\Interface\INotificationService.cs" />
     <Compile Include="BusinessLayer\Interface\IPolicyHistoryService.cs" />
+    <Compile Include="BusinessLayer\Interface\IPolicyTypeService.cs" />
     <Compile Include="BusinessLayer\Interface\IPolicyService.cs" />
     <Compile Include="BusinessLayer\Interface\IDocumentService.cs" />
+    <Compile Include="BusinessLayer\Interface\ISettingsService.cs" />
     <Compile Include="BusinessLayer\Interface\IUserService.cs" />
     <Compile Include="BusinessLayer\Service\NotificationService.cs" />
     <Compile Include="BusinessLayer\Service\PolicyHistoryService.cs" />
+    <Compile Include="BusinessLayer\Service\PolicyTypeService.cs" />
     <Compile Include="BusinessLayer\Service\PolicyService.cs" />
     <Compile Include="BusinessLayer\Service\DocumentService.cs" />
+    <Compile Include="BusinessLayer\Service\SettingsService.cs" />
     <Compile Include="BusinessLayer\Service\UserService.cs" />
     <Compile Include="Controllers\PolicyController.cs" />
     <Compile Include="Controllers\PolicyHistoryController.cs" />
+    <Compile Include="Controllers\PolicyTypeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="DataLayer\Document.cs">
       <DependentUpon>InsuranceEntities.tt</DependentUpon>
@@ -243,9 +248,11 @@
     <Compile Include="DataLayer\User.cs">
       <DependentUpon>InsuranceEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entity\DocumentDTO.cs" />
     <Compile Include="Entity\PolicyDTO.cs" />
     <Compile Include="Entity\PolicyHistoryDTO.cs" />
     <Compile Include="Entity\PolicyTypeDTO.cs" />
+    <Compile Include="Entity\SettingsDTO.cs" />
     <Compile Include="Entity\UserDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />

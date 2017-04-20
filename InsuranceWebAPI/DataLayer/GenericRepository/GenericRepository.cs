@@ -18,16 +18,6 @@ namespace InsuranceWebAPI.DataLayer.GenericRepository
         }
 
         /// <summary>
-        /// generic Get method for Entities
-        /// </summary>
-        /// <returns></returns>
-        public virtual IEnumerable<TEntity> Get()
-        {
-            IQueryable<TEntity> query = DbSet;
-            return query.ToList();
-        }
-
-        /// <summary>
         /// Generic get method on the basis of id for Entities.
         /// </summary>
         /// <param name="id"></param>
@@ -50,10 +40,9 @@ namespace InsuranceWebAPI.DataLayer.GenericRepository
         /// Generic Delete method for the entities
         /// </summary>
         /// <param name="id"></param>
-        public virtual void Delete(object id)
+        public virtual void Delete(TEntity entityToDelete)
         {
-            TEntity entityToDelete = DbSet.Find(id);
-            Delete(entityToDelete);
+            DbSet.Remove(entityToDelete);
         }
 
         /// <summary>

@@ -8,7 +8,7 @@ namespace InsuranceWebAPI.Entity
     public class PolicyTypeDTO
     {
         public int PolicyTypeID { get; set; }
-        public string PolicyType1 { get; set; }
+        public string PolicyTypeName { get; set; }
         public DateTime? CreatedDate { get; set; }
         public DateTime? ModifiedDate { get; set; }
     }

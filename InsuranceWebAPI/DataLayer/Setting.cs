@@ -14,6 +14,7 @@ namespace InsuranceWebAPI.DataLayer
     
     public partial class Setting
     {
+        public int Id { get; set; }
         public string SenderEmail { get; set; }
         public string SenderPassword { get; set; }
         public string SenderName { get; set; }
