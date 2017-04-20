@@ -15,7 +15,6 @@
                 resolve: {
                     currentUser: ['UserFactory', function (UserFactory) {
                         var user = UserFactory.getCurrentUser();
-                        console.log(user);
                         return user;
                     }]
                 }

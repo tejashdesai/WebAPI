@@ -1,0 +1,86 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="widget ">
+            <div class="widget-header">
+                <i class="fa fa-users" ng-class="icon"></i> Current Policies
+                <div class="pull-right">
+                    <a class="btn btn-info" ui-sref="main.policy.new">Add Policy</a>
+                </div>
+            </div>
+            <div class="widget-body ">
+                <div class="widget-content row">
+                    <div class="col-xs-12 no-padding">
+                        <div class="col-lg-3 form-group">
+                            <label for="name">Name:</label>
+                            <input type="text" ng-model="current.filterData.name" class="form-control">
+                        </div>
+                        <div class="col-lg-3 form-group">
+                            <label for="name">Policy Number:</label>
+                            <input type="text" ng-model="current.filterData.policyNumber" class="form-control">
+                        </div>
+                        <div class="col-lg-3 form-group">
+                            <label for="name">Month:</label>
+                            <select ng-model="current.filterData.month" class="form-control" ng-options="key*1 as value for (key , value) in current.months">
+                                <option value="">All</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-3">
+                            <br/>
+                            <button type="button" ng-click="current.resetFilter()" class="btn btn-warning"> Reset</button>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div  ng-repeat="(key,value) in current.currentPolicyData | filter:current.filterRange | groupBy:'month' track by $index">
+                            <div class="widget custom-widget">
+                                <div class="widget-header bg-primary">
+                                    {{current.months[key]}}
+                                </div>
+                                <div class="widget-body  no-padding ">
+                                    <div class="widget-content row">
+                                        <div class="table-responsive ">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Expires On</th>
+                                                        <th>Name</th>
+                                                        <th>Policy Number</th>
+                                                        <th>Policy Type</th>
+                                                        <th>Mobile</th>
+                                                        <th>Email</th>
+                                                        <th>Start Date</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="item in value track by $index">
+                                                        <td>{{item.endDate | date: 'dd-MMM-yyyy'}}</td>
+                                                        <td>{{item.name}}</td>
+                                                        <td>{{item.policyNumber}}</td>
+                                                        <td>{{item.policyType}}</td>
+                                                        <td>{{item.mobile}}</td>
+                                                        <td>{{item.email}}</td>
+                                                        <td>{{item.startDate | date: 'dd-MMM-yyyy'}}</td>
+                                                        <td>
+                                                            <a ui-sref="main.policy.edit({'policyId' : item.policyID})">Edit</a> |
+                                                            <a ng-click="expired.deletePolicy(item)">Delete</a> |
+                                                            <a ng-click="expired.notifyUser(item)">Notify</a>
+                                                        </td>
+                                                    </tr>
+                                                    <tr ng-if="value.length === 0">
+                                                        <td colspan="6">
+                                                            <b>No records found.</b>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

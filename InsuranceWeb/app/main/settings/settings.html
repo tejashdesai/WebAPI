@@ -1,0 +1,55 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="widget ">
+            <div class="widget-header">
+                <i class="fa fa-cogs" ng-class="icon"></i> Settings
+            </div>
+            <div class="widget-body ">
+                <div class="widget-content row">
+                    <form novalidate name="new.frmSetting" ng-submit="new.frmSetting.$valid && new.saveSettings()">
+                        <div class="col-xs-12 no-padding">
+                            <div class="col-xs-12">
+                                <h4 class="col-xs-8  no-padding">Email</h4>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="col-lg-4 form-group">
+                                    <label for="email">Email:</label>
+                                    <input type="text" name="email" required ng-pattern="new.emailPattern" ng-model="new.policyData.email" class="form-control">
+                                    <div ng-messages="(new.frmSetting.$submitted || new.frmSetting.email.$touched) && new.frmSetting.email.$error" class="text-danger"
+                                        role="alert">
+                                        <div ng-message="required">Please enter email.</div>
+                                        <div ng-message="pattern">Invalid email.</div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 form-group">
+                                    <label for="email">Email:</label>
+                                    <input type="text" name="email" required ng-pattern="new.emailPattern" ng-model="new.policyData.email" class="form-control">
+                                    <div ng-messages="(new.frmSetting.$submitted || new.frmSetting.email.$touched) && new.frmSetting.email.$error" class="text-danger"
+                                        role="alert">
+                                        <div ng-message="required">Please enter email.</div>
+                                        <div ng-message="pattern">Invalid email.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="col-lg-4 form-group">
+                                    <label for="mobile">Mobile:</label>
+                                    <input type="text" name="mobile" required ng-model="new.policyData.mobile" class="form-control">
+                                    <div ng-messages="(new.frmSetting.$submitted || new.frmSetting.mobile.$touched) && new.frmSetting.mobile.$error" class="text-danger"
+                                        role="alert">
+                                        <div ng-message="required">Please enter mobile number.</div>
+                                        <div ng-message="pattern">Invalid mobile number.</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 button-row">
+                                <button type="submit" class="btn btn-success"> Save Settings</button>
+                                <button type="button" ng-click="new.cancelSettings()" class="btn btn-warning"> Cancel</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
