@@ -6,7 +6,6 @@ using System.Linq;
 using System.Web;
 using InsuranceWebAPI.Entity;
 using InsuranceWebAPI.DataLayer;
-using AutoMapper;
 
 namespace InsuranceWebAPI.BusinessLayer.Service
 {

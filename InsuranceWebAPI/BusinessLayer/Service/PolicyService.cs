@@ -6,7 +6,6 @@ using System.Linq;
 using System.Web;
 using InsuranceWebAPI.Entity;
 using InsuranceWebAPI.DataLayer;
-using AutoMapper;
 
 namespace InsuranceWebAPI.BusinessLayer.Service
 {
@@ -61,12 +60,12 @@ namespace InsuranceWebAPI.BusinessLayer.Service
 
         public IEnumerable<PolicyDTO> GetAllPolicy()
         {
-            var policies = _unitOfWork.PolicyRepository.GetAll().Where(x => !x.IsDeleted.Value).ToList();
-            if (policies.Any())
-            {
-                var policyModel = Mapper.Map<List<Policy>, List<PolicyDTO>>(policies);
-                return policyModel;
-            }
+            //var policies = _unitOfWork.PolicyRepository.GetAll().Where(x => !x.IsDeleted.Value).ToList();
+            //if (policies.Any())
+            //{
+            //    var policyModel = Mapper.Map<List<Policy>, List<PolicyDTO>>(policies);
+            //    return policyModel;
+            //}
             return null;
         }
 
