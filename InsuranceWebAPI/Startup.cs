@@ -8,6 +8,7 @@ using System.Security.Claims;
 using InsuranceWebAPI.BusinessLayer.Interface;
 using InsuranceWebAPI.BusinessLayer.Service;
 using InsuranceWebAPI.Entity;
+using log4net.Config;
 
 [assembly: OwinStartup(typeof(InsuranceWebAPI.Startup))]
 
@@ -18,7 +19,7 @@ namespace InsuranceWebAPI
         public void Configuration(IAppBuilder app)
         {
             HttpConfiguration config = new HttpConfiguration();
-
+            XmlConfigurator.Configure();
             ConfigureOAuth(app);
             WebApiConfig.Register(config);
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
