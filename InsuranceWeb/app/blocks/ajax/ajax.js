@@ -11,7 +11,8 @@
             get: get,
             put: put,
             ajaxDelete: ajaxDelete,
-            formEncoded: formEncoded
+            formEncoded: formEncoded,
+            fileUpload: fileUpload
         }
 
         function checkPendingRequest() {
@@ -90,15 +91,39 @@
                 });
         }
 
+        function fileUpload(url, data, successFunction, errorFunction) {
+            cfpLoadingBar.start();
+            var req = {
+                method: 'POST',
+                url: url,
+                headers: {
+                    'Content-Type': undefined
+                },
+                data: data
+            };
+            $http(req)
+                .then(function (data) {
+                    checkPendingRequest();
+                    if (!data) {
+                        errorFunction(data);
+                    }
+                    successFunction(data);
+                }, function (error) {
+                    checkPendingRequest();
+                    errorFunction(error);
+                });
+        }
+
+
         function formEncoded(url, data, successFunction, errorFunction) {
             cfpLoadingBar.start();
             var req = {
                 method: 'POST',
                 url: url,
-               headers: {
-                        'Content-Type': undefined
-                    },
-                data: data
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                data: $httpParamSerializer(data)
             };
             $http(req)
                 .then(function (data) {

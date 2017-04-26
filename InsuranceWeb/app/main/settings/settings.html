@@ -14,7 +14,7 @@
                             <div class="col-xs-12">
                                 <div class="col-lg-4 form-group">
                                     <label for="email">Email:</label>
-                                    <input type="text" name="email" required ng-pattern="new.emailPattern" ng-model="new.policyData.email" class="form-control">
+                                    <input type="text" name="email" required ng-pattern="new.emailPattern" ng-model="setting.settingData.SenderEmail" class="form-control">
                                     <div ng-messages="(new.frmSetting.$submitted || new.frmSetting.email.$touched) && new.frmSetting.email.$error" class="text-danger"
                                         role="alert">
                                         <div ng-message="required">Please enter email.</div>

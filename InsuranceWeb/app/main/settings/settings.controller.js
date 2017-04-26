@@ -1,11 +1,11 @@
 (function () {
     'use strict';
 
-    angular.module("insuranceApp.main").controller('HomeController',homeController);
+    angular.module("insuranceApp.main").controller('SettingsController',settingsController);
 
-    homeController.$inject = ['SettingService'];
+    settingsController.$inject = ['SettingService'];
 
-    function homeController(SettingService) {
+    function settingsController(SettingService) {
         var vm= this;
 
         function initDTO(){
@@ -13,11 +13,11 @@
         }
 
         function getSettingData(){
-            SettingService.getDashboardData(function(data){
-                vm.settingData = data || {};
-            },function(error){
+            // SettingService.getDashboardData(function(data){
+            //     vm.settingData = data || {};
+            // },function(error){
                 
-            })
+            // })
         }
 
         function init(){

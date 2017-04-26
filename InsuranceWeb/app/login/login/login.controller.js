@@ -21,7 +21,7 @@
                 }, 500);
             }, function (error) {
                 vm.invalidUser = true;
-                vm.invalidMessage = error.error_description;
+                vm.invalidMessage = 'The username or password is incorrect';
             });
         };
     }

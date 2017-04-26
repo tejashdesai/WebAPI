@@ -39,7 +39,7 @@
         }
 
         function savePolicy(data, successFunction, errorFunction) {
-            AjaxFactory.formEncoded(APIPATH + 'savepolicy', data, function (response) {
+            AjaxFactory.fileUpload(APIPATH + 'savepolicy', data, function (response) {
                 successFunction(response.data);
             }, function (error) {
                 errorFunction(error);

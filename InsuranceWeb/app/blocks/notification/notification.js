@@ -22,23 +22,19 @@
         };
 
         function success(title, message, option) {
-            var toastrOption = angular.extend(option, defaultOption);
-            toastr.success(message, title, toastrOption);
+            toastr.success(message, title);
         };
 
         function error(message, title, option) {
-            var toastrOption = angular.extend(option, defaultOption);
-            toastr.error(message, title, toastrOption);
+            toastr.error(message, title);
         };
 
         function info(message, title, option) {
-            var toastrOption = angular.extend(option, defaultOption);
-            toastr.info(message, title, toastrOption);
+            toastr.info(message, title);
         };
 
         function warn(message, title, option) {
-            var toastrOption = angular.extend(option, defaultOption);
-            toastr.warning(message, title, toastrOption);
+            toastr.warning(message, title);
         };
     }
 
