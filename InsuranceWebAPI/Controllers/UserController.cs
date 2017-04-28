@@ -39,6 +39,7 @@ namespace InsuranceWebAPI.Controllers
 
         [Authorize]
         [Route("notification/{id}")]
+        [HttpGet]
         public HttpResponseMessage SendNotification(int id)
         {
             if (_notificationServices.SendNotification(id))
@@ -53,6 +54,18 @@ namespace InsuranceWebAPI.Controllers
         {
             if (_settingsServices.UpdateSettings(settingsEntity))
                 return Request.CreateResponse(HttpStatusCode.OK, true);
+            return Request.CreateResponse(HttpStatusCode.InternalServerError, false);
+        }
+
+        [Authorize]
+        [Route("getsettings")]
+        public HttpResponseMessage GetSettings()
+        {
+            var settings = _settingsServices.GetSettings();
+            if (settings != null)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, settings);
+            }
             return Request.CreateResponse(HttpStatusCode.InternalServerError, false);
         }
     }

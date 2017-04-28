@@ -28,7 +28,7 @@ namespace InsuranceWebAPI.BusinessLayer.Service
                 EndDate = policyHistoryEntity.EndDate,
                 IsCurrent = true,
                 PolicyAmount = policyHistoryEntity.PolicyAmount,
-                PolicyID = policyHistoryEntity.PolicyID.Value,
+                PolicyID = policyHistoryEntity.PolicyID.HasValue ? policyHistoryEntity.PolicyID.Value : 0,
                 PolicyNumber = policyHistoryEntity.PolicyNumber,
                 StartDate = policyHistoryEntity.StartDate
             };
@@ -79,9 +79,9 @@ namespace InsuranceWebAPI.BusinessLayer.Service
                         PolicyHistoryID = x.PolicyHistoryID,
                         PolicyID = x.PolicyID,
                         PolicyNumber = x.PolicyNumber,
-                        PolicyType = x.Policy.PolicyType1.PolicyTypeName,
+                        PolicyType = x.Policy?.PolicyType1?.PolicyTypeName,
                         StartDate = x.StartDate,
-                        Month = x.StartDate.Value.Month
+                        Month = x.StartDate.HasValue ? x.StartDate.Value.Month : 0
                     }).ToList();
                     return currentPolicy;
                 }
@@ -105,7 +105,7 @@ namespace InsuranceWebAPI.BusinessLayer.Service
                     policyHistory.EndDate = policyHistoryEntity.EndDate;
                     policyHistory.IsCurrent = policyHistoryEntity.StartDate <= DateTime.Now && policyHistoryEntity.EndDate > DateTime.Now ? true : false;
                     policyHistory.PolicyAmount = policyHistoryEntity.PolicyAmount;
-                    policyHistory.PolicyID = policyHistoryEntity.PolicyID.Value;
+                    policyHistory.PolicyID = policyHistoryEntity.PolicyID.HasValue ? policyHistoryEntity.PolicyID.Value : 0;
                     policyHistory.PolicyNumber = policyHistoryEntity.PolicyNumber;
                     policyHistory.StartDate = policyHistoryEntity.StartDate;
                     policyHistory.ModifiedDate = DateTime.Now;
@@ -127,7 +127,7 @@ namespace InsuranceWebAPI.BusinessLayer.Service
                 summary = (from month in Enumerable.Range(1, 12)
                            let key = month
                            join policyHistory in _unitOfWork.PolicyHistoryRepository.GetManyQueryable(ph => ph.IsCurrent.HasValue ? ph.IsCurrent.Value : false)
-                           on key equals policyHistory.StartDate.Value.Month into g
+                           on key equals policyHistory.StartDate.HasValue ? policyHistory.StartDate.Value.Month : 0 into g
                            select new SummaryModel { Month = key, Count = g.Count() }).ToList();
 
                 return summary;

@@ -10,5 +10,6 @@ namespace InsuranceWebAPI.BusinessLayer.Interface
     public interface ISettingsService
     {
         bool UpdateSettings(SettingsDTO settingEntity);
+        SettingsDTO GetSettings();
     }
 }

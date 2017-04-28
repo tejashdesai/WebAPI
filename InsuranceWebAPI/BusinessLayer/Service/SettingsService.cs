@@ -17,6 +17,28 @@ namespace InsuranceWebAPI.BusinessLayer.Service
             _unitOfWork = new UnitOfWork();
         }
 
+        public SettingsDTO GetSettings()
+        {
+            var settings = _unitOfWork.SettingRepository.GetAll().First();
+            return new SettingsDTO
+            {
+                CredentialEmailID = settings.CredentialEmailID,
+                CredentialPassword = settings.CredentialPassword,
+                Mobile = settings.Mobile,
+                SenderEmail = settings.SenderEmail,
+                SenderName = settings.SenderName,
+                SenderPassword = settings.SenderPassword,
+                SMSPassword = settings.SMSPassword,
+                SMSRoute = settings.SMSRoute,
+                SMSSender = settings.SMSSender,
+                SMSType = settings.SMSType,
+                SMSUserName = settings.SMSUserName,
+                DailySubject = settings.DailySubject,
+                SMTPIP = settings.SMTPIP,
+                SMTPPORT = settings.SMTPPORT
+            };
+        }
+
         public bool UpdateSettings(SettingsDTO settingEntity)
         {
             var success = false;

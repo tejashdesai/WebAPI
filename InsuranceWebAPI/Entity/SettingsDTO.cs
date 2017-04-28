@@ -14,5 +14,8 @@ namespace InsuranceWebAPI.Entity
         public string SMSSender { get; set; }
         public string SMSRoute { get; set; }
         public string SMSType { get; set; }
+        public string DailySubject { get; set; }
+        public string SMTPIP { get; set; }
+        public string SMTPPORT { get; set; }
     }
 }

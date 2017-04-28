@@ -101,8 +101,8 @@ namespace InsuranceWebAPI.Controllers
             {
                 policyRes = _policyServices.CreatePolicy(policyEntity);
             }
-
-            if (policy.deletedFiles)
+            var deletedFiles = policy.deletedFiles;
+            if (deletedFiles != null)
             {
                 var fileList = policy.deletedFiles.split(',');
                 foreach (var item in fileList)

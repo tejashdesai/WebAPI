@@ -36,7 +36,9 @@ namespace InsuranceWebAPI.BusinessLayer.Service
                 Mobile = policyEntity.Mobile,
                 Mobile1 = policyEntity.Mobile1,
                 Name = policyEntity.Name,
-                PolicyType = policyEntity.PolicyType
+                PolicyType = policyEntity.PolicyType,
+                IsActive = true,
+                IsDeleted = false
             };
             _unitOfWork.PolicyRepository.Insert(policy);
             _unitOfWork.Save();
@@ -72,7 +74,8 @@ namespace InsuranceWebAPI.BusinessLayer.Service
         public ModifyPolicy GetPolicyById(int policyId)
         {
             var policy = _unitOfWork.PolicyRepository.GetByID(policyId);
-            if (policy != null && !policy.IsDeleted.Value)
+            var IsDeleted = policy.IsDeleted.HasValue ? policy.IsDeleted.Value : false;
+            if (policy != null && !IsDeleted)
             {
                 var policyModel = new ModifyPolicy
                 {

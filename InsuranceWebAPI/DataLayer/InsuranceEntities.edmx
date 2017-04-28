@@ -74,6 +74,9 @@
           <Property Name="SMSSender" Type="varchar" MaxLength="50" />
           <Property Name="SMSRoute" Type="varchar" MaxLength="10" />
           <Property Name="SMSType" Type="varchar" MaxLength="10" />
+          <Property Name="DailySubject" Type="varchar" MaxLength="500" />
+          <Property Name="SMTPIP" Type="varchar" MaxLength="500" />
+          <Property Name="SMTPPORT" Type="varchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -239,6 +242,9 @@
           <Property Name="SMSSender" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="SMSRoute" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="SMSType" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="DailySubject" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="SMTPIP" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="SMTPPORT" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -351,6 +357,9 @@
           <EntitySetMapping Name="Settings">
             <EntityTypeMapping TypeName="InsuranceModel.Setting">
               <MappingFragment StoreEntitySet="Settings">
+                <ScalarProperty Name="SMTPPORT" ColumnName="SMTPPORT" />
+                <ScalarProperty Name="SMTPIP" ColumnName="SMTPIP" />
+                <ScalarProperty Name="DailySubject" ColumnName="DailySubject" />
                 <ScalarProperty Name="SMSType" ColumnName="SMSType" />
                 <ScalarProperty Name="SMSRoute" ColumnName="SMSRoute" />
                 <ScalarProperty Name="SMSSender" ColumnName="SMSSender" />

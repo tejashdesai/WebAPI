@@ -23,11 +23,12 @@ namespace InsuranceWebAPI.BusinessLayer.Service
         {
             var policyHistory = _unitOfWork.PolicyHistoryRepository.GetByID(policyHistoryId);
             var setting = _unitOfWork.SettingRepository.GetAll().FirstOrDefault();
-            var emailSent = new Common().sendMail(policyHistory.Policy.Name, policyHistory.PolicyNumber, policyHistory.EndDate.Value.ToShortDateString(),
+            var ExpiryDate = policyHistory.EndDate.HasValue ? policyHistory.EndDate.Value.ToShortDateString() : DateTime.Now.ToShortDateString();
+            var emailSent = new Common().sendMail(policyHistory.Policy.Name, policyHistory.PolicyNumber, ExpiryDate,
                  policyHistory.Policy.Email, setting.SenderEmail, setting.SenderName, setting.CredentialEmailID,
                  setting.CredentialPassword);
 
-            var smsSent = new Common().sendSMS(policyHistory.Policy.Name, policyHistory.PolicyNumber, policyHistory.EndDate.Value.ToShortDateString(),
+            var smsSent = new Common().sendSMS(policyHistory.Policy.Name, policyHistory.PolicyNumber, ExpiryDate,
               setting.SMSUserName, setting.SMSPassword, setting.SMSSender, setting.SMSType, setting.SMSRoute, policyHistory.Policy.Mobile);
             return true;
         }
