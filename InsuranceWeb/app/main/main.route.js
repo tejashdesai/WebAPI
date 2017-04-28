@@ -27,6 +27,15 @@
                 data: {
                     title: 'Home'
                 }
+            })
+            .state('main.settings', {
+                url: '/settings',
+                templateUrl: 'app/main/settings/settings.html',
+                controller: "SettingsController",
+                controllerAs: 'settings',
+                data: {
+                    title: 'Settings'
+                }
             });
     }
 

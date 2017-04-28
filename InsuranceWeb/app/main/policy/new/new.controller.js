@@ -58,7 +58,6 @@
                 vm.policyData = data;
                 setDTOData();
             }, function (error) {
-                message.error('Policy', 'Error');
             })
         }
 
@@ -152,24 +151,24 @@
                 sendData.append('files', newDocuments[i].fileData, newDocuments[i].fileData.name);
             }
 
-            var oldDocuments = $filter('filter')(vm.uploadedFiles, {
-                type: vm.type.old
-            });
-            if (oldDocuments.length > 0) {
-                sendData.append('fileHoldNames', _.map(oldDocuments, 'name').join(','));
-            }
+            // var oldDocuments = $filter('filter')(vm.uploadedFiles, {
+            //     type: vm.type.old
+            // });
+            // if (oldDocuments.length > 0) {
+            //     sendData.append('fileHoldNames', _.map(oldDocuments, 'name').join(','));
+            // }
 
             var deletedDocuments = $filter('filter')(vm.uploadedFiles, {
                 type: vm.type.deleted
             });
             if (deletedDocuments.length > 0) {
-                sendData.append('fileDeletedNames', _.map(deletedDocuments, 'name').join(','));
+                sendData.append('deletedFiles', _.map(deletedDocuments, 'name').join(','));
             }
 
             PolicyService.savePolicy(sendData, function (data) {
-                debugger;
+                message.success('Policy','Saved Successfully');
             }, function (error) {
-
+                message.error('Policy','Error while save policy.');
             })
         };
 

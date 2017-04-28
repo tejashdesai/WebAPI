@@ -62,8 +62,8 @@
                                                         <td>{{item.startDate | date: 'dd-MMM-yyyy'}}</td>
                                                         <td>
                                                             <a ui-sref="main.policy.edit({'policyId' : item.policyID})">Edit</a> |
-                                                            <a ng-click="expired.deletePolicy(item)">Delete</a> |
-                                                            <a ng-click="expired.notifyUser(item)">Notify</a>
+                                                            <a ng-click="current.deletePolicy(item)">Delete</a> |
+                                                            <a ng-click="current.notifyUser(item)">Notify</a>
                                                         </td>
                                                     </tr>
                                                     <tr ng-if="value.length === 0">

@@ -34,31 +34,32 @@ namespace InsuranceWeb
                                 "~/app/main/main.run.js",
                                 "~/app/main/main.config.js",
                                 "~/app/main/main.controller.js",
-                                "~/app/main/home/home.controller.js").
+                                "~/app/main/home/home.controller.js",
+                                "~/app/main/settings/settings.controller.js").
                         Include(
                                 "~/app/main/policy/new/new.controller.js",
                                 "~/app/main/policy/current/current.controller.js",
                                 "~/app/main/policy/expired/expired.controller.js"));
 
             bundles.Add(new ScriptBundle("~/script/core").Include(
-                      "~/bower_components/jquery/dist/jquery.js",
-                      "~/bower_components/bootstrap/dist/js/bootstrap.js",
-                      "~/bower_components/angular/angular.js",
-                      "~/bower_components/angular-animate/angular-animate.js",
-                      "~/bower_components/angular-sanitize/angular-sanitize.js",
-                      "~/bower_components/angular-ui-router/release/angular-ui-router.js",
-                      "~/bower_components/ngstorage/ngStorage.js",
-                      "~/bower_components/angular-filter/dist/angular-filter.min.js",
-                      "~/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js",
-                      "~/bower_components/angular-toastr/dist/angular-toastr.tpls.min.js",
-                      "~/bower_components/angular-loading-bar/build/loading-bar.min.js",
-                      "~/bower_components/angular-messages/angular-messages.min.js"));
+                      "~/lib/js/jquery.js",
+                      "~/lib/js/bootstrap.js",
+                      "~/lib/js/angular.js",
+                      "~/lib/js/angular-animate.js",
+                      "~/lib/js/angular-sanitize.js",
+                      "~/lib/js/angular-ui-router.js",
+                      "~/lib/js/ngStorage.js",
+                      "~/lib/js/angular-filter.min.js",
+                      "~/lib/js/ui-bootstrap-tpls.min.js",
+                      "~/lib/js/angular-toastr.tpls.min.js",
+                      "~/lib/js/loading-bar.min.js",
+                      "~/lib/js/angular-messages.min.js"));
 
             bundles.Add(new StyleBundle("~/css/core").Include(
-                      "~/bower_components/bootstrap/dist/css/bootstrap.min.css",
-                      "~/bower_components/components-font-awesome/css/font-awesome.min.css",
-                       "~/bower_components/angular-toastr/dist/angular-toastr.min.css",
-                       "~/bower_components/angular-loading-bar/build/loading-bar.min.css"));
+                      "~/lib/css/bootstrap.min.css",
+                      "~/lib/css/font-awesome.min.css",
+                       "~/lib/css/angular-toastr.min.css",
+                       "~/lib/css/loading-bar.min.css"));
 
             bundles.Add(new StyleBundle("~/css/app").
                       IncludeDirectory("~/assets", "*.css", true));

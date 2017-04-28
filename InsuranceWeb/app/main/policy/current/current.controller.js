@@ -3,9 +3,9 @@
 
     angular.module("insuranceApp.main.policy").controller('CurrentPolicyController', currentPolicyController);
 
-    currentPolicyController.$inject = ['$stateParams', 'PolicyService', 'message', 'MONTHS'];
+    currentPolicyController.$inject = ['$state', '$stateParams', 'PolicyService', 'message', 'MONTHS'];
 
-    function currentPolicyController($stateParams, PolicyService, message, MONTHS) {
+    function currentPolicyController($state, $stateParams, PolicyService, message, MONTHS) {
         var vm = this;
 
         vm.months = MONTHS;
@@ -46,18 +46,19 @@
         vm.notifyUser = function (item) {
             PolicyService.sendNotification(item.policyID, function (data) {
                 message.success('Notification', 'SMS and Email notification sent successfully.');
+                $state.go('main.policy.current');
             }, function (error) {
-                message.success('Notification', 'Error while notification.');
+
             })
         };
 
-        vm.deletePolicy = function(item){
+        vm.deletePolicy = function (item) {
             PolicyService.deletePolicyData(item.policyID, function (data) {
                 message.success('Notification', 'Policy deleted successfully.');
                 var index = vm.currentPolicyData.indexOf(item);
-                vm.currentPolicyData.splice(index,1);
+                vm.currentPolicyData.splice(index, 1);
             }, function (error) {
-                message.success('Notification', 'Error while delete policy.');
+
             });
         };
 
