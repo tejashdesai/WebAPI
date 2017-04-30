@@ -3,9 +3,9 @@
 
     angular.module("insuranceApp.main").controller('SettingsController',settingsController);
 
-    settingsController.$inject = ['SettingService'];
+    settingsController.$inject = ['SettingService','message'];
 
-    function settingsController(SettingService) {
+    function settingsController(SettingService,message) {
         var vm= this;
 
         function initDTO(){
@@ -13,11 +13,11 @@
         }
 
         function getSettingData(){
-            // SettingService.getDashboardData(function(data){
-            //     vm.settingData = data || {};
-            // },function(error){
+            SettingService.getSettings(function(data){
+                vm.settingData = data || {};
+            },function(error){
                 
-            // })
+            });
         }
 
         function init(){
@@ -35,7 +35,7 @@
         };
 
         vm.cancelSettings = function(){
-            init();
+            getSettingData();
         }
 
 

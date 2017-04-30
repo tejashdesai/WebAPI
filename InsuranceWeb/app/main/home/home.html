@@ -40,7 +40,7 @@
                                     <td>{{item.policyNumber}}</td>
                                     <td>{{item.policyType}}</td>
                                     <td>{{item.mobile}}</td>
-                                    <td><a href="javascript:void(0)">Edit</a></td>
+                                    <td><a  ui-sref="main.policy.edit({'policyId' : item.policyID})" >Edit</a></td>
                                 </tr>
                                 <tr ng-if="home.dashboardData.length === 0">
                                     <td colspan="6">

@@ -10,7 +10,7 @@
         this.saveSettings = saveSettings;
 
         function getSettings(successFunction, errorFunction) {
-            AjaxFactory.get(APIPATH + 'dashboard', {}, function (response) {
+            AjaxFactory.get(APIPATH + 'getsettings', {}, function (response) {
                 successFunction(response.data);
             }, function (error) {
                 errorFunction(error.data);

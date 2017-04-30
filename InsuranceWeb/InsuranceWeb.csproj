@@ -150,6 +150,7 @@
     <Content Include="app\common\service\login.js" />
     <Content Include="app\common\service\policy.js" />
     <Content Include="app\common\service\service.module.js" />
+    <Content Include="app\common\service\setting.js" />
     <Content Include="app\core\constant.js" />
     <Content Include="app\core\core.module.js" />
     <Content Include="app\login\login.module.js" />

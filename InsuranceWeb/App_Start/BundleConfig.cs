@@ -19,7 +19,8 @@ namespace InsuranceWeb
                         IncludeDirectory("~/app", "*.route.js", true).
                         Include("~/app/core/constant.js").
                         Include("~/app/common/service/login.js",
-                                "~/app/common/service/policy.js").
+                                "~/app/common/service/policy.js",
+                                "~/app/common/service/setting.js").
                         Include("~/app/common/factory/user.js",
                                 "~/app/common/factory/common.js").
                         Include("~/app/common/directive/file-upload.js").

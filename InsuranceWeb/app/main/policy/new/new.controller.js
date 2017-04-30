@@ -167,6 +167,7 @@
 
             PolicyService.savePolicy(sendData, function (data) {
                 message.success('Policy','Saved Successfully');
+                $state.go('main.policy.current');
             }, function (error) {
                 message.error('Policy','Error while save policy.');
             })

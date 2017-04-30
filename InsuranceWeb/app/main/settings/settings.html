@@ -6,45 +6,139 @@
             </div>
             <div class="widget-body ">
                 <div class="widget-content row">
-                    <form novalidate name="new.frmSetting" ng-submit="new.frmSetting.$valid && new.saveSettings()">
+                    <form novalidate name="settings.frmSetting" ng-submit="settings.frmSetting.$valid && settings.saveSettings()">
                         <div class="col-xs-12 no-padding">
                             <div class="col-xs-12">
                                 <h4 class="col-xs-8  no-padding">Email</h4>
+                                <hr>
                             </div>
                             <div class="col-xs-12">
                                 <div class="col-lg-4 form-group">
-                                    <label for="email">Email:</label>
-                                    <input type="text" name="email" required ng-pattern="new.emailPattern" ng-model="setting.settingData.SenderEmail" class="form-control">
-                                    <div ng-messages="(new.frmSetting.$submitted || new.frmSetting.email.$touched) && new.frmSetting.email.$error" class="text-danger"
-                                        role="alert">
+                                    <label for="email">Sender Email:</label>
+                                    <input type="text" name="senderEmail" required ng-pattern="settings.emailPattern" ng-model="settings.settingData.senderEmail" class="form-control">
+                                    <div ng-messages="(settings.frmSetting.$submitted || settings.frmSetting.senderEmail.$touched) && settings.frmSetting.senderEmail.$error"
+                                        class="text-danger" role="alert">
                                         <div ng-message="required">Please enter email.</div>
                                         <div ng-message="pattern">Invalid email.</div>
                                     </div>
                                 </div>
                                 <div class="col-lg-4 form-group">
-                                    <label for="email">Email:</label>
-                                    <input type="text" name="email" required ng-pattern="new.emailPattern" ng-model="new.policyData.email" class="form-control">
-                                    <div ng-messages="(new.frmSetting.$submitted || new.frmSetting.email.$touched) && new.frmSetting.email.$error" class="text-danger"
-                                        role="alert">
+                                    <label for="senderPassword">Sender Password:</label>
+                                    <input type="password" name="senderPassword" required ng-model="settings.settingData.senderPassword" class="form-control">
+                                    <div ng-messages="(settings.frmSetting.$submitted || settings.frmSetting.senderPassword.$touched) && settings.frmSetting.senderPassword.$error"
+                                        class="text-danger" role="alert">
+                                        <div ng-message="required">Please enter password.</div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 form-group">
+                                    <label for="senderName">Sender Name:</label>
+                                    <input type="text" name="senderName" required ng-model="settings.settingData.senderName" class="form-control">
+                                    <div ng-messages="(settings.frmSetting.$submitted || settings.frmSetting.senderName.$touched) && settings.frmSetting.senderName.$error"
+                                        class="text-danger" role="alert">
+                                        <div ng-message="required">Please enter sender name.</div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 form-group">
+                                    <label for="credentialEmailID">Credential Email ID:</label>
+                                    <input type="text" name="credentialEmailID" required ng-pattern="settings.emailPattern" ng-model="settings.settingData.credentialEmailID" class="form-control">
+                                    <div ng-messages="(settings.frmSetting.$submitted || settings.frmSetting.credentialEmailID.$touched) && settings.frmSetting.credentialEmailID.$error"
+                                        class="text-danger" role="alert">
                                         <div ng-message="required">Please enter email.</div>
                                         <div ng-message="pattern">Invalid email.</div>
                                     </div>
                                 </div>
+                                <div class="col-lg-4 form-group">
+                                    <label for="credentialPassword">Credential Password:</label>
+                                    <input type="password" name="credentialPassword" required ng-model="settings.settingData.credentialPassword" class="form-control">
+                                    <div ng-messages="(settings.frmSetting.$submitted || settings.frmSetting.credentialPassword.$touched) && settings.frmSetting.credentialPassword.$error"
+                                        class="text-danger" role="alert">
+                                        <div ng-message="required">Please enter password.</div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 form-group">
+                                    <label for="smtpip">SMTP IP:</label>
+                                    <input type="text" name="smtpip" required  ng-model="settings.settingData.smtpip" class="form-control">
+                                    <div ng-messages="(settings.frmSetting.$submitted || settings.frmSetting.smtpip.$touched) && settings.frmSetting.smtpip.$error"
+                                        class="text-danger" role="alert">
+                                        <div ng-message="required">Please enter SMTP IP.</div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 form-group">
+                                    <label for="smtpport">SMTP Port:</label>
+                                    <input type="text" name="smtpport" required ng-model="settings.settingData.smtpport" class="form-control">
+                                    <div ng-messages="(settings.frmSetting.$submitted || settings.frmSetting.smtpport.$touched) && settings.frmSetting.smtpport.$error"
+                                        class="text-danger" role="alert">
+                                        <div ng-message="required">Please enter SMTP Port.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12">
+                                <h4 class="col-xs-8  no-padding">SMS</h4>
+                                <hr>
                             </div>
                             <div class="col-xs-12">
+                                <div class="col-lg-4 form-group">
+                                    <label for="smsSender">SMS Sender:</label>
+                                    <input type="text" name="smsSender" required  ng-model="settings.settingData.smsSender" class="form-control">
+                                    <div ng-messages="(settings.frmSetting.$submitted || settings.frmSetting.smsSender.$touched) && settings.frmSetting.smsSender.$error"
+                                        class="text-danger" role="alert">
+                                        <div ng-message="required">Please enter SMS Sender.</div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 form-group">
+                                    <label for="smsPassword">SMS Password:</label>
+                                    <input type="password" name="smsPassword" required ng-model="settings.settingData.smsPassword" class="form-control">
+                                    <div ng-messages="(settings.frmSetting.$submitted || settings.frmSetting.smsPassword.$touched) && settings.frmSetting.smsPassword.$error"
+                                        class="text-danger" role="alert">
+                                        <div ng-message="required">Please enter password.</div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 form-group">
+                                    <label for="smsUserName">SMS User Name:</label>
+                                    <input type="text" name="smsUserName" ng-model="settings.settingData.smsUserName" required  class="form-control">
+                                    <div ng-messages="(settings.frmSetting.$submitted || settings.frmSetting.smsUserName.$touched) && settings.frmSetting.smsUserName.$error"
+                                        class="text-danger" role="alert">
+                                        <div ng-message="required">Please enter SMS User Name.</div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 form-group">
+                                    <label for="smsRoute">SMS Route:</label>
+                                    <input type="text" name="smsRoute" required ng-model="settings.settingData.smsRoute" class="form-control">
+                                    <div ng-messages="(settings.frmSetting.$submitted || settings.frmSetting.smsRoute.$touched) && settings.frmSetting.smsRoute.$error"
+                                        class="text-danger" role="alert">
+                                        <div ng-message="required">Please enter SMS Route.</div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 form-group">
+                                    <label for="smsType">SMS Type:</label>
+                                    <input type="text" name="smsType" required ng-model="settings.settingData.smsType" class="form-control">
+                                    <div ng-messages="(settings.frmSetting.$submitted || settings.frmSetting.smsType.$touched) && settings.frmSetting.smsType.$error"
+                                        class="text-danger" role="alert">
+                                        <div ng-message="required">Please enter SMS Type.</div>
+                                    </div>
+                                </div>
                                 <div class="col-lg-4 form-group">
                                     <label for="mobile">Mobile:</label>
-                                    <input type="text" name="mobile" required ng-model="new.policyData.mobile" class="form-control">
-                                    <div ng-messages="(new.frmSetting.$submitted || new.frmSetting.mobile.$touched) && new.frmSetting.mobile.$error" class="text-danger"
-                                        role="alert">
-                                        <div ng-message="required">Please enter mobile number.</div>
-                                        <div ng-message="pattern">Invalid mobile number.</div>
+                                    <input type="text" name="mobile" required ng-model="settings.settingData.mobile" class="form-control">
+                                    <div ng-messages="(settings.frmSetting.$submitted || settings.frmSetting.mobile.$touched) && settings.frmSetting.mobile.$error"
+                                        class="text-danger" role="alert">
+                                        <div ng-message="required">Please enter Mobile.</div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 form-group">
+                                    <label for="dailySubject">Daily Subject:</label>
+                                    <input type="text" name="dailySubject" required ng-model="settings.settingData.dailySubject" class="form-control">
+                                    <div ng-messages="(settings.frmSetting.$submitted || settings.frmSetting.dailySubject.$touched) && settings.frmSetting.dailySubject.$error"
+                                        class="text-danger" role="alert">
+                                        <div ng-message="required">Please enter Daily Subject.</div>
                                     </div>
                                 </div>
                             </div>
+                            
                             <div class="col-lg-6 button-row">
                                 <button type="submit" class="btn btn-success"> Save Settings</button>
-                                <button type="button" ng-click="new.cancelSettings()" class="btn btn-warning"> Cancel</button>
+                                <button type="button" ng-click="settings.cancelSettings()" class="btn btn-warning"> Cancel</button>
                             </div>
                         </div>
                     </form>
