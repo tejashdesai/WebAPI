@@ -83,18 +83,18 @@ namespace InsuranceWebAPI.Controllers
                 Mobile = policy.mobile,
                 Mobile1 = policy.mobile1,
                 Name = policy.name,
-                PolicyType = policy.molicyType,
+                PolicyType = policy.policyType,
                 IsActive = true,
                 IsDeleted = false
             };
 
             var policyRes = 0;
-            if (policy.policyId > 0)
+            if (policy.policyID > 0)
             {
-                var res = _policyServices.UpdatePolicy(policy.policyId, policyEntity);
+                var res = _policyServices.UpdatePolicy(policy.policyID, policyEntity);
                 if (res)
                 {
-                    policyRes = policy.policyId;
+                    policyRes = policy.policyID;
                 }
             }
             else
@@ -125,12 +125,12 @@ namespace InsuranceWebAPI.Controllers
                     IsDeleted = false
                 };
                 var policyHistoryRes = 0;
-                if (policy.policyHistoryId > 0)
+                if (policy.policyHistoryID > 0)
                 {
-                    var res = _policyHistoryServices.UpdatePolicyHistory(policy.policyHistoryId, policyHistory);
+                    var res = _policyHistoryServices.UpdatePolicyHistory(policy.policyHistoryID, policyHistory);
                     if (res)
                     {
-                        policyHistoryRes = policy.policyHistoryId;
+                        policyHistoryRes = policy.policyHistoryID;
                     }
                 }
                 else
