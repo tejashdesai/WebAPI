@@ -43,7 +43,7 @@
         };
 
         vm.notifyUser = function(item){
-            PolicyService.sendNotification(item.policyID, function(data){
+            PolicyService.sendNotification(item.policyHistoryID, function (data) {
                 message.success('Notification','SMS and Email notification sent successfully.');
             },function(error){
                 message.success('Notification','Error while notification.');                

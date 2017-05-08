@@ -44,7 +44,7 @@
 
 
         vm.notifyUser = function (item) {
-            PolicyService.sendNotification(item.policyID, function (data) {
+            PolicyService.sendNotification(item.policyHistoryID, function (data) {
                 message.success('Notification', 'SMS and Email notification sent successfully.');
                 $state.go('main.policy.current');
             }, function (error) {

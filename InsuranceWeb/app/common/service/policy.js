@@ -63,7 +63,7 @@
         }
 
         function sendNotification(data, successFunction, errorFunction) {
-            AjaxFactory.post(APIPATH + 'notification/' + data, {}, function (response) {
+            AjaxFactory.get(APIPATH + 'notification/' + data, {}, function (response) {
                 successFunction(response.data);
             }, function (error) {
                 errorFunction(error.data);

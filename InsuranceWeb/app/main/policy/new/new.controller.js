@@ -11,6 +11,15 @@
         vm.mobilePattern = "/^[0-9]{10,10}$/";
 
         vm.policyId = $stateParams.policyId;
+        vm.currentPolicy= {};
+
+        vm.policyTypeData = [{
+            text :'Individual Medical',value : 1
+        },{
+            text :'Family Floater Medical',value : 2
+        },{
+            text :'Vehicle',value : 3
+        }]
 
         vm.type = {
             old: 0,
@@ -42,7 +51,9 @@
             vm.tempUploadedFiles = [];
             vm.fileError = {};
             vm.file = {};
-            vm.policyData = {};
+            vm.policyData = {
+                policyHistory : []
+            };
         }
 
         function setDTOData() {
@@ -51,6 +62,8 @@
             }, true);
             vm.date.startDate = new Date(temp[0].startDate);
             vm.date.endDate = new Date(temp[0].endDate);
+            vm.currentPolicy.policyNumber = temp[0].policyNumber;
+            vm.currentPolicy.policyAmount= temp[0].policyAmount;
         }
 
         function getPolicyData() {
@@ -138,8 +151,14 @@
         vm.savePolicy = function () {
             var sendData = new FormData();
 
-            vm.policyData.startDate = vm.date.startDate;
-            vm.policyData.endDate = vm.date.endDate;
+            vm.currentPolicy.startDate = vm.date.startDate;
+            vm.currentPolicy.endDate = vm.date.endDate;
+
+            if (!angular.isEmpty(vm.policyId)) {
+            }
+            else{
+                vm.policyData.policyHistory.push(vm.currentPolicy);
+            }
 
             sendData.append('policy', angular.toJson(vm.policyData));
 
