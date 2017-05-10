@@ -60,12 +60,16 @@ namespace InsuranceWebAPI.BusinessLayer.Service
                 if (isDashboard)
                 {
                     policyHistories = _unitOfWork.PolicyHistoryRepository
-               .GetManyQueryable(ph => ph.EndDate <= DateTime.Now.AddDays(30) && ph.EndDate >= DateTime.Now).ToList();
+               .GetManyQueryable(ph => ph.EndDate <= DateTime.Now.AddDays(30) && ph.EndDate >= DateTime.Now && (ph.Policy.IsDeleted.HasValue ? !ph.Policy.IsDeleted.Value : false)).ToList();
                 }
                 else
                 {
+                    //     policyHistories = _unitOfWork.PolicyHistoryRepository
+                    //.GetManyQueryable(ph => (ph.IsCurrent.HasValue ? ph.IsCurrent.Value : false) && (ph.Policy.IsDeleted.HasValue ? !ph.Policy.IsDeleted.Value : false)).ToList();
                     policyHistories = _unitOfWork.PolicyHistoryRepository
-               .GetManyQueryable(ph => ph.IsCurrent.HasValue ? ph.IsCurrent.Value : false).ToList();
+                    .GetManyQueryable(ph => ( DateTime.Now.Date >= (ph.StartDate.HasValue ? ph.StartDate.Value.Date : DateTime.Now.Date) &&
+                     DateTime.Now.Date <= (ph.EndDate.HasValue ? ph.EndDate.Value.Date : DateTime.Now.Date)) && 
+                     (ph.Policy.IsDeleted.HasValue ? !ph.Policy.IsDeleted.Value : false)).ToList();
                 }
 
                 if (policyHistories.Any())
@@ -91,7 +95,6 @@ namespace InsuranceWebAPI.BusinessLayer.Service
             {
                 throw ex;
             }
-
         }
 
         public bool UpdatePolicyHistory(int policyHistoryId, PolicyHistoryDTO policyHistoryEntity)
@@ -126,7 +129,7 @@ namespace InsuranceWebAPI.BusinessLayer.Service
 
                 summary = (from month in Enumerable.Range(1, 12)
                            let key = month
-                           join policyHistory in _unitOfWork.PolicyHistoryRepository.GetManyQueryable(ph => ph.IsCurrent.HasValue ? ph.IsCurrent.Value : false)
+                           join policyHistory in _unitOfWork.PolicyHistoryRepository.GetManyQueryable(ph => (ph.IsCurrent.HasValue ? ph.IsCurrent.Value : false) && (ph.Policy.IsDeleted.HasValue ? !ph.Policy.IsDeleted.Value: false))
                            on key equals policyHistory.StartDate.HasValue ? policyHistory.StartDate.Value.Month : 0 into g
                            select new SummaryModel { Month = key, Count = g.Count() }).ToList();
 

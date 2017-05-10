@@ -65,10 +65,10 @@ namespace InsuranceWebAPI.BusinessLayer
             }
         }
 
-        public string sendSMS(string name, string policyNumber, string date,string SMSUserName,string SMSPassword,
-           string SMSSender,string SMSMessageType,string SMSRoute, string mobile)
+        public string sendSMS(string name, string policyNumber, string date, string SMSUserName, string SMSPassword,
+           string SMSSender, string SMSMessageType, string SMSRoute, string mobile, string policyType)
         {
-            string msg = @"Dear " + name + ", your national insurance mediclaim policy " + policyNumber + " expires on " + date + ". Please submit the renewal fees to avoid policy lapse. Contact your Agent Nayana Kapadia (9898764740).";
+            string msg = @"Dear " + name + ", your national insurance " + policyType + " policy " + policyNumber + " expires on " + date + ". Please submit the renewal fees to avoid policy lapse. Contact your Agent Nayana Kapadia (9898764740).";
 
             string mobile_no = mobile;
 

@@ -33,7 +33,7 @@ namespace InsuranceWebAPI.Controllers
                     //if (policyHistoryEntities.Any())
                     return Request.CreateResponse(HttpStatusCode.OK, policyHistory);
                 }
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No current policy found");
+                return Request.CreateErrorResponse(HttpStatusCode.OK, "No current policy found");
             }
             catch (System.Exception ex)
             {
@@ -56,7 +56,7 @@ namespace InsuranceWebAPI.Controllers
                     //if (policyHistoryEntities.Any())
                     return Request.CreateResponse(HttpStatusCode.OK, policyHistory);
                 }
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No current policy found");
+                return Request.CreateErrorResponse(HttpStatusCode.OK, "No current policy found");
             }
             catch (System.Exception ex)
             {
@@ -79,7 +79,7 @@ namespace InsuranceWebAPI.Controllers
                     //if (policyHistoryEntities.Any())
                     return Request.CreateResponse(HttpStatusCode.OK, summary);
                 }
-                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "No current policy found");
+                return Request.CreateErrorResponse(HttpStatusCode.OK, "No current policy found");
             }
             catch (System.Exception ex)
             {

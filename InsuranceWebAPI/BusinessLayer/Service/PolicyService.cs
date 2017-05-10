@@ -95,11 +95,12 @@ namespace InsuranceWebAPI.BusinessLayer.Service
                     {
                         EndDate = x.EndDate,
                         IsCurrent = x.IsCurrent,
-                        IsDeleted = x.IsDeleted,
+                        IsDeleted = x.IsDeleted.HasValue ? x.IsDeleted.Value : false,
                         PolicyAmount = x.PolicyAmount,
                         PolicyHistoryID = x.PolicyHistoryID,
                         PolicyNumber = x.PolicyNumber,
-                        StartDate = x.StartDate
+                        StartDate = x.StartDate,
+
                     }).ToList(),
                     Documents = policy.Documents.Select(x => new DocumentDTO
                     {

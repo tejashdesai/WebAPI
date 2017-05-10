@@ -56,6 +56,7 @@ namespace InsuranceWebAPI.BusinessLayer.Service
                 settings.SMSSender = settingEntity.SMSSender;
                 settings.SMSType = settingEntity.SMSType;
                 settings.SMSUserName = settingEntity.SMSUserName;
+                settings.SMTPIP = settingEntity.SMTPIP;
 
                 _unitOfWork.SettingRepository.Update(settings);
                 _unitOfWork.Save();

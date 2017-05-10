@@ -55,118 +55,129 @@ namespace InsuranceWebAPI.Controllers
         [HttpPost]
         public async Task<HttpResponseMessage> SavePolicy()
         {
-            if (!Request.Content.IsMimeMultipartContent())
+            try
             {
-                throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
-            }
-
-            var root = HttpContext.Current.Server.MapPath("~/Documents");
-            Directory.CreateDirectory(root);
-            var provider = new MultipartFormDataStreamProvider(root);
-            var result = await Request.Content.ReadAsMultipartAsync(provider);
-            if (result.FormData["policy"] == null)
-            {
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
-            }
-            dynamic policy = JsonConvert.DeserializeObject(result.FormData["policy"]);
-
-            var policyEntity = new PolicyDTO
-            {
-                AdditionalName1 = policy.additionalName1,
-                AdditionalName2 = policy.additionalName2,
-                AdditionalName3 = policy.additionalName3,
-                Address1 = policy.address1,
-                Address2 = policy.address2,
-                City = policy.city,
-                CreatedDate = DateTime.Now,
-                Email = policy.email,
-                Mobile = policy.mobile,
-                Mobile1 = policy.mobile1,
-                Name = policy.name,
-                PolicyType = policy.policyType,
-                IsActive = true,
-                IsDeleted = false
-            };
-
-            var policyRes = 0;
-            if (policy.policyID > 0)
-            {
-                var res = _policyServices.UpdatePolicy(policy.policyID, policyEntity);
-                if (res)
+                if (!Request.Content.IsMimeMultipartContent())
                 {
-                    policyRes = policy.policyID;
+                    throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
                 }
-            }
-            else
-            {
-                policyRes = _policyServices.CreatePolicy(policyEntity);
-            }
-            var deletedFiles = policy.deletedFiles;
-            if (deletedFiles != null)
-            {
-                var fileList = policy.deletedFiles.split(',');
-                foreach (var item in fileList)
-                {
-                    _documentServices.DeleteDocument(policyRes, item);
-                    File.Delete(Path.Combine(HttpContext.Current.Server.MapPath("~/Documents/" + policyRes), item));
-                }
-            }
 
-            if (policyRes > 0)
-            {
-                var policyHistory = new PolicyHistoryDTO
+                var root = HttpContext.Current.Server.MapPath("~/Documents");
+                Directory.CreateDirectory(root);
+                var provider = new MultipartFormDataStreamProvider(root);
+                var result = await Request.Content.ReadAsMultipartAsync(provider);
+                if (result.FormData["policy"] == null)
                 {
-                    EndDate = policy.endDate,
-                    IsCurrent = true,
-                    PolicyAmount = policy.policyAmount,
-                    PolicyID = policyRes,
-                    PolicyNumber = policy.policyNumber,
-                    StartDate = policy.startDate,
+                    throw new HttpResponseException(HttpStatusCode.BadRequest);
+                }
+                dynamic policy = JsonConvert.DeserializeObject(result.FormData["policy"]);
+
+                PolicyDTO policyEntity = new PolicyDTO
+                {
+                    AdditionalName1 = policy.additionalName1,
+                    AdditionalName2 = policy.additionalName2,
+                    AdditionalName3 = policy.additionalName3,
+                    Address1 = policy.address1,
+                    Address2 = policy.address2,
+                    City = policy.city,
+                    CreatedDate = DateTime.Now,
+                    Email = policy.email,
+                    Mobile = policy.mobile,
+                    Mobile1 = policy.mobile1,
+                    Name = policy.name,
+                    PolicyType = policy.policyType,
+                    IsActive = true,
                     IsDeleted = false
                 };
-                var policyHistoryRes = 0;
-                if (policy.policyHistoryID > 0)
+
+                var policyRes = 0;
+                if (policy.policyID > 0)
                 {
-                    var res = _policyHistoryServices.UpdatePolicyHistory(policy.policyHistoryID, policyHistory);
+                    int pId = policy.policyID;
+                    var res = _policyServices.UpdatePolicy(pId, policyEntity);
                     if (res)
                     {
-                        policyHistoryRes = policy.policyHistoryID;
+                        policyRes = policy.policyID;
                     }
                 }
                 else
                 {
-                    policyHistoryRes = _policyHistoryServices.CreatePolicyHistory(policyHistory);
+                    policyRes = _policyServices.CreatePolicy(policyEntity);
                 }
-
-                if (policyHistoryRes > 0)
+                var deletedFiles = policy.deletedFiles;
+                if (deletedFiles != null)
                 {
-                    var subDir = HttpContext.Current.Server.MapPath("~/Documents/" + policyRes);
-                    Directory.CreateDirectory(subDir);
-                    //get the files
-                    foreach (var file in result.FileData)
+                    var fileList = policy.deletedFiles.split(',');
+                    foreach (var item in fileList)
                     {
-                        FileInfo finfo = new FileInfo(file.LocalFileName);
-                        var fileName = file.Headers.ContentDisposition.FileName.Replace("\"", "");
-                        var destFile = Path.Combine(subDir, fileName);
-                        if (File.Exists(destFile))
+                        _documentServices.DeleteDocument(policyRes, item);
+                        File.Delete(Path.Combine(HttpContext.Current.Server.MapPath("~/Documents/" + policyRes), item));
+                    }
+                }
+
+                if (policyRes > 0)
+                {
+                    DateTime EndDate = policy.policyHistory[0].endDate;
+                    DateTime StartDate = policy.policyHistory[0].startDate;
+                    var policyHistory = new PolicyHistoryDTO
+                    {
+                        EndDate = EndDate,
+                        IsCurrent = DateTime.Now.Date >= StartDate.Date && DateTime.Now.Date <= EndDate.Date ? true : false,
+                        PolicyAmount = policy.policyHistory[0].policyAmount,
+                        PolicyID = policyRes,
+                        PolicyNumber = policy.policyHistory[0].policyNumber,
+                        StartDate = StartDate,
+                        IsDeleted = false
+                    };
+                    var policyHistoryRes = 0;
+
+                    if (policy.policyHistory[0].policyHistoryID != null && policy.policyHistory[0].policyHistoryID > 0)
+                    {
+                        int phId = policy.policyHistory[0].policyHistoryID;
+                        var res = _policyHistoryServices.UpdatePolicyHistory(phId, policyHistory);
+                        if (res)
                         {
-                            File.Delete(destFile);
+                            policyHistoryRes = phId;
                         }
-                        File.Move(finfo.FullName, destFile);
-                        _documentServices.CreateDocument(policyRes, fileName, destFile);
+                    }
+                    else
+                    {
+                        policyHistoryRes = _policyHistoryServices.CreatePolicyHistory(policyHistory);
                     }
 
-                    return Request.CreateResponse(HttpStatusCode.OK, policyRes);
+                    if (policyHistoryRes > 0)
+                    {
+                        var subDir = HttpContext.Current.Server.MapPath("~/Documents/" + policyRes);
+                        Directory.CreateDirectory(subDir);
+                        //get the files
+                        foreach (var file in result.FileData)
+                        {
+                            FileInfo finfo = new FileInfo(file.LocalFileName);
+                            var fileName = file.Headers.ContentDisposition.FileName.Replace("\"", "");
+                            var destFile = Path.Combine(subDir, fileName);
+                            if (File.Exists(destFile))
+                            {
+                                File.Delete(destFile);
+                            }
+                            File.Move(finfo.FullName, destFile);
+                            _documentServices.CreateDocument(policyRes, fileName, destFile);
+                        }
+
+                        return Request.CreateResponse(HttpStatusCode.OK, policyRes);
+                    }
+                    else
+                    {
+                        _policyServices.DeletePolicy(policyRes);
+                        return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error while saving policy history.");
+                    }
                 }
-                else
-                {
-                    _policyServices.DeletePolicy(policyRes);
-                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error while saving policy history.");
-                }
+
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error while saving policy.");
             }
-
-            return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Error while saving policy.");
-
+            catch (Exception ex)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
+            }
         }
 
         [Authorize]

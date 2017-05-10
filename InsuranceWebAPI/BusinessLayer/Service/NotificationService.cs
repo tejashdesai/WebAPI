@@ -29,7 +29,8 @@ namespace InsuranceWebAPI.BusinessLayer.Service
                  setting.CredentialPassword);
 
             var smsSent = new Common().sendSMS(policyHistory.Policy.Name, policyHistory.PolicyNumber, ExpiryDate,
-              setting.SMSUserName, setting.SMSPassword, setting.SMSSender, setting.SMSType, setting.SMSRoute, policyHistory.Policy.Mobile);
+              setting.SMSUserName, setting.SMSPassword, setting.SMSSender, setting.SMSType, setting.SMSRoute, policyHistory.Policy.Mobile,
+              policyHistory.Policy.PolicyType1.PolicyTypeName);
             return true;
         }
     }
