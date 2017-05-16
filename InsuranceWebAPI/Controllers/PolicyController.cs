@@ -55,6 +55,8 @@ namespace InsuranceWebAPI.Controllers
         [HttpPost]
         public async Task<HttpResponseMessage> SavePolicy()
         {
+            var policyRes = 0;
+
             try
             {
                 if (!Request.Content.IsMimeMultipartContent())
@@ -90,7 +92,6 @@ namespace InsuranceWebAPI.Controllers
                     IsDeleted = false
                 };
 
-                var policyRes = 0;
                 if (policy.policyID > 0)
                 {
                     int pId = policy.policyID;
@@ -107,45 +108,55 @@ namespace InsuranceWebAPI.Controllers
                 var deletedFiles = policy.deletedFiles;
                 if (deletedFiles != null)
                 {
-                    var fileList = policy.deletedFiles.split(',');
+                    string deleteFiles = Convert.ToString(policy.deletedFiles);
+                    var fileList = deleteFiles.Split(',');
                     foreach (var item in fileList)
                     {
                         _documentServices.DeleteDocument(policyRes, item);
-                        File.Delete(Path.Combine(HttpContext.Current.Server.MapPath("~/Documents/" + policyRes), item));
+                        if (File.Exists(Path.Combine(HttpContext.Current.Server.MapPath("~/Documents/" + policyRes), item)))
+                        {
+                            File.Delete(Path.Combine(HttpContext.Current.Server.MapPath("~/Documents/" + policyRes), item));
+                        }
                     }
                 }
 
                 if (policyRes > 0)
                 {
-                    DateTime EndDate = policy.policyHistory[0].endDate;
-                    DateTime StartDate = policy.policyHistory[0].startDate;
-                    var policyHistory = new PolicyHistoryDTO
-                    {
-                        EndDate = EndDate,
-                        IsCurrent = DateTime.Now.Date >= StartDate.Date && DateTime.Now.Date <= EndDate.Date ? true : false,
-                        PolicyAmount = policy.policyHistory[0].policyAmount,
-                        PolicyID = policyRes,
-                        PolicyNumber = policy.policyHistory[0].policyNumber,
-                        StartDate = StartDate,
-                        IsDeleted = false
-                    };
-                    var policyHistoryRes = 0;
+                    List<PolicyHistoryDTO> policyHistories = policy.policyHistory.ToObject<List<PolicyHistoryDTO>>();
 
-                    if (policy.policyHistory[0].policyHistoryID != null && policy.policyHistory[0].policyHistoryID > 0)
+                    for (int i = 0; i < policyHistories.Count; i++)
                     {
-                        int phId = policy.policyHistory[0].policyHistoryID;
-                        var res = _policyHistoryServices.UpdatePolicyHistory(phId, policyHistory);
-                        if (res)
+                        DateTime EndDate = policyHistories[i].EndDate.HasValue ? policyHistories[i].EndDate.Value : DateTime.Now;
+                        DateTime StartDate = policyHistories[i].StartDate.HasValue ? policyHistories[i].StartDate.Value : DateTime.Now;
+                        var policyHistory = new PolicyHistoryDTO
                         {
-                            policyHistoryRes = phId;
+                            EndDate = EndDate,
+                            IsCurrent = DateTime.Now.Date >= StartDate.Date && DateTime.Now.Date <= EndDate.Date ? true : false,
+                            PolicyAmount = policyHistories[i].PolicyAmount,
+                            PolicyID = policyRes,
+                            PolicyNumber = policyHistories[i].PolicyNumber,
+                            StartDate = StartDate,
+                            IsDeleted = false
+                        };
+                        var policyHistoryRes = 0;
+
+                        if (policyHistories[i].PolicyHistoryID > 0)
+                        {
+                            int phId = policyHistories[0].PolicyHistoryID;
+                            var res = _policyHistoryServices.UpdatePolicyHistory(phId, policyHistory);
+                            if (res)
+                            {
+                                policyHistoryRes = phId;
+                            }
+                        }
+                        else
+                        {
+                            policyHistoryRes = _policyHistoryServices.CreatePolicyHistory(policyHistory);
                         }
                     }
-                    else
-                    {
-                        policyHistoryRes = _policyHistoryServices.CreatePolicyHistory(policyHistory);
-                    }
 
-                    if (policyHistoryRes > 0)
+
+                    if (policyRes > 0)
                     {
                         var subDir = HttpContext.Current.Server.MapPath("~/Documents/" + policyRes);
                         Directory.CreateDirectory(subDir);
@@ -160,7 +171,7 @@ namespace InsuranceWebAPI.Controllers
                                 File.Delete(destFile);
                             }
                             File.Move(finfo.FullName, destFile);
-                            _documentServices.CreateDocument(policyRes, fileName, destFile);
+                            _documentServices.CreateDocument(policyRes, fileName, "Documents/" + policyRes + "/" + fileName);
                         }
 
                         return Request.CreateResponse(HttpStatusCode.OK, policyRes);
@@ -176,6 +187,7 @@ namespace InsuranceWebAPI.Controllers
             }
             catch (Exception ex)
             {
+                _policyServices.DeletePolicy(policyRes);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }

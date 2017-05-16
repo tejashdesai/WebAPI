@@ -67,8 +67,8 @@ namespace InsuranceWebAPI.BusinessLayer.Service
                     //     policyHistories = _unitOfWork.PolicyHistoryRepository
                     //.GetManyQueryable(ph => (ph.IsCurrent.HasValue ? ph.IsCurrent.Value : false) && (ph.Policy.IsDeleted.HasValue ? !ph.Policy.IsDeleted.Value : false)).ToList();
                     policyHistories = _unitOfWork.PolicyHistoryRepository
-                    .GetManyQueryable(ph => ( DateTime.Now.Date >= (ph.StartDate.HasValue ? ph.StartDate.Value.Date : DateTime.Now.Date) &&
-                     DateTime.Now.Date <= (ph.EndDate.HasValue ? ph.EndDate.Value.Date : DateTime.Now.Date)) && 
+                    .GetManyQueryable(ph => (DateTime.Now.Date >= (ph.StartDate.HasValue ? ph.StartDate.Value.Date : DateTime.Now.Date) &&
+                     DateTime.Now.Date <= (ph.EndDate.HasValue ? ph.EndDate.Value.Date : DateTime.Now.Date)) &&
                      (ph.Policy.IsDeleted.HasValue ? !ph.Policy.IsDeleted.Value : false)).ToList();
                 }
 
@@ -85,7 +85,7 @@ namespace InsuranceWebAPI.BusinessLayer.Service
                         PolicyNumber = x.PolicyNumber,
                         PolicyType = x.Policy?.PolicyType1?.PolicyTypeName,
                         StartDate = x.StartDate,
-                        Month = x.StartDate.HasValue ? x.StartDate.Value.Month : 0
+                        Month = x.EndDate.HasValue ? x.EndDate.Value.Month : 0
                     }).ToList();
                     return currentPolicy;
                 }
@@ -129,11 +129,45 @@ namespace InsuranceWebAPI.BusinessLayer.Service
 
                 summary = (from month in Enumerable.Range(1, 12)
                            let key = month
-                           join policyHistory in _unitOfWork.PolicyHistoryRepository.GetManyQueryable(ph => (ph.IsCurrent.HasValue ? ph.IsCurrent.Value : false) && (ph.Policy.IsDeleted.HasValue ? !ph.Policy.IsDeleted.Value: false))
-                           on key equals policyHistory.StartDate.HasValue ? policyHistory.StartDate.Value.Month : 0 into g
+                           join policyHistory in _unitOfWork.PolicyHistoryRepository.GetManyQueryable(ph => (ph.IsCurrent.HasValue ? ph.IsCurrent.Value : false) && (ph.Policy.IsDeleted.HasValue ? !ph.Policy.IsDeleted.Value : false))
+                           on key equals policyHistory.EndDate.HasValue ? policyHistory.EndDate.Value.Month : 0 into g
                            select new SummaryModel { Month = key, Count = g.Count() }).ToList();
 
                 return summary;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public IEnumerable<CurrentPolicyModel> GetExpiredPolicy()
+        {
+            try
+            {
+                var policyHistories = new List<PolicyHistory>();
+                policyHistories = _unitOfWork.PolicyHistoryRepository
+                .GetManyQueryable(ph => (DateTime.Now.Date > (ph.EndDate.HasValue ? ph.EndDate.Value.Date : DateTime.Now.Date)) &&
+                 (ph.Policy.IsDeleted.HasValue ? !ph.Policy.IsDeleted.Value : false)).ToList();
+
+                if (policyHistories.Any())
+                {
+                    var currentPolicy = policyHistories.Select(x => new CurrentPolicyModel
+                    {
+                        Name = x.Policy.Name,
+                        Email = x.Policy.Email,
+                        EndDate = x.EndDate,
+                        Mobile = x.Policy.Mobile,
+                        PolicyHistoryID = x.PolicyHistoryID,
+                        PolicyID = x.PolicyID,
+                        PolicyNumber = x.PolicyNumber,
+                        PolicyType = x.Policy?.PolicyType1?.PolicyTypeName,
+                        StartDate = x.StartDate,
+                        Month = x.StartDate.HasValue ? x.StartDate.Value.Month : 0
+                    }).ToList();
+                    return currentPolicy;
+                }
+                return null;
             }
             catch (Exception ex)
             {

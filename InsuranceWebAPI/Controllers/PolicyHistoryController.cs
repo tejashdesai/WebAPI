@@ -33,7 +33,30 @@ namespace InsuranceWebAPI.Controllers
                     //if (policyHistoryEntities.Any())
                     return Request.CreateResponse(HttpStatusCode.OK, policyHistory);
                 }
-                return Request.CreateErrorResponse(HttpStatusCode.OK, "No current policy found");
+                return Request.CreateResponse(HttpStatusCode.OK, new List<CurrentPolicyModel>());
+            }
+            catch (System.Exception ex)
+            {
+                return Request.CreateErrorResponse(System.Net.HttpStatusCode.InternalServerError,
+                    ex.Message);
+            }
+        }
+
+        [Authorize]
+        [Route("expiredpolicy")]
+        [HttpGet]
+        public HttpResponseMessage getExpiredPolicies()
+        {
+            try
+            {
+                var policyHistory = _policyHistoryServices.GetExpiredPolicy();
+                if (policyHistory != null)
+                {
+                    //var policyHistoryEntities = policyHistory as List<CurrentPolicyModel> ?? policyHistory.ToList();
+                    //if (policyHistoryEntities.Any())
+                    return Request.CreateResponse(HttpStatusCode.OK, policyHistory);
+                }
+                return Request.CreateResponse(HttpStatusCode.OK, new List<CurrentPolicyModel>());
             }
             catch (System.Exception ex)
             {
@@ -56,7 +79,7 @@ namespace InsuranceWebAPI.Controllers
                     //if (policyHistoryEntities.Any())
                     return Request.CreateResponse(HttpStatusCode.OK, policyHistory);
                 }
-                return Request.CreateErrorResponse(HttpStatusCode.OK, "No current policy found");
+                return Request.CreateResponse(HttpStatusCode.OK, new List<CurrentPolicyModel>());
             }
             catch (System.Exception ex)
             {
@@ -79,7 +102,7 @@ namespace InsuranceWebAPI.Controllers
                     //if (policyHistoryEntities.Any())
                     return Request.CreateResponse(HttpStatusCode.OK, summary);
                 }
-                return Request.CreateErrorResponse(HttpStatusCode.OK, "No current policy found");
+                return Request.CreateResponse(HttpStatusCode.OK, new List<SummaryModel>());
             }
             catch (System.Exception ex)
             {
