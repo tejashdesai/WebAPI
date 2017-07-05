@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('insuranceApp.core')
-        .constant('APIPATH', 'http://insurance.krackerjack.co.in/')
+        .constant('APIPATH', 'http://insuranceapi.jivantclinic.com/')
         .constant('MONTHS', {
             1: 'January',
             2: 'Febraury',

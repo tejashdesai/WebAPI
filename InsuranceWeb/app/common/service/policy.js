@@ -9,6 +9,7 @@
         this.getDashboardData = getDashboardData;
         this.getSummaryData = getSummaryData;
         this.getCurrentPolicy = getCurrentPolicy;
+        this.getExpiredPolicy = getExpiredPolicy;
         this.savePolicy = savePolicy;
         this.getPolicyData = getPolicyData;
         this.deletePolicyData = deletePolicyData;
@@ -32,6 +33,14 @@
 
         function getCurrentPolicy(successFunction, errorFunction) {
             AjaxFactory.get(APIPATH + 'currentpolicy', {}, function (response) {
+                successFunction(response.data);
+            }, function (error) {
+                errorFunction(error.data);
+            });
+        }
+
+        function getExpiredPolicy(successFunction, errorFunction) {
+            AjaxFactory.get(APIPATH + 'expiredpolicy', {}, function (response) {
                 successFunction(response.data);
             }, function (error) {
                 errorFunction(error.data);

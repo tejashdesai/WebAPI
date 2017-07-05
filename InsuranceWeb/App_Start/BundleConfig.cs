@@ -45,6 +45,7 @@ namespace InsuranceWeb
             bundles.Add(new ScriptBundle("~/script/core").Include(
                       "~/lib/js/jquery.js",
                       "~/lib/js/bootstrap.js",
+                      "~/lib/js/lodash.min.js",
                       "~/lib/js/angular.js",
                       "~/lib/js/angular-animate.js",
                       "~/lib/js/angular-sanitize.js",

@@ -2,23 +2,26 @@
     'use strict';
     angular.module('insuranceApp.main.policy').controller('NewPolicyController', newPolicyController);
 
-    newPolicyController.$inject = ['$uibModal', '$state', '$stateParams', '$filter', 'PolicyService', 'message'];
+    newPolicyController.$inject = ['$uibModal', '$state', '$stateParams', '$filter', 'PolicyService', 'message', 'APIPATH'];
 
-    function newPolicyController($uibModal, $state, $stateParams, $filter, PolicyService, message) {
+    function newPolicyController($uibModal, $state, $stateParams, $filter, PolicyService, message, APIPATH) {
         var vm = this;
 
         vm.emailPattern = /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/;
         vm.mobilePattern = "/^[0-9]{10,10}$/";
 
         vm.policyId = $stateParams.policyId;
-        vm.currentPolicy= {};
+        vm.currentPolicy = {};
 
         vm.policyTypeData = [{
-            text :'Individual Medical',value : 1
-        },{
-            text :'Family Floater Medical',value : 2
-        },{
-            text :'Vehicle',value : 3
+            text: 'Individual Medical',
+            value: 1
+        }, {
+            text: 'Family Floater Medical',
+            value: 2
+        }, {
+            text: 'Vehicle',
+            value: 3
         }]
 
         vm.type = {
@@ -52,8 +55,18 @@
             vm.fileError = {};
             vm.file = {};
             vm.policyData = {
-                policyHistory : []
+                policyHistory: []
             };
+        }
+
+        function setDocument() {
+            angular.forEach(vm.policyData.documents || [], function (item) {
+                vm.uploadedFiles.push({
+                    fileData: APIPATH + item.documentPath,
+                    type: vm.type.old,
+                    name: item.documentName
+                })
+            });
         }
 
         function setDTOData() {
@@ -62,19 +75,19 @@
             }, true);
             vm.date.startDate = new Date(temp[0].startDate);
             vm.date.endDate = new Date(temp[0].endDate);
-            vm.currentPolicy.policyNumber = temp[0].policyNumber;
-            vm.currentPolicy.policyAmount= temp[0].policyAmount;
+            vm.currentPolicy = temp[0];
+
+            setDocument();
         }
 
         function getPolicyData() {
             PolicyService.getPolicyData(vm.policyId, function (data) {
                 vm.policyData = data;
                 setDTOData();
-            }, function (error) {
-            })
+            }, function (error) {})
         }
 
-        function policyHistoryPopup(item,isEdit) {
+        function policyHistoryPopup(item, isEdit) {
             var modalInstance = $uibModal.open({
                 templateUrl: 'policyHistoryModal.html',
                 controller: 'PolicyHistoryPopupController',
@@ -155,12 +168,16 @@
             vm.currentPolicy.endDate = vm.date.endDate;
 
             if (!angular.isEmpty(vm.policyId)) {
-            }
-            else{
+                var temp = $filter('filter')(vm.policyData.policyHistory, {
+                    'isCurrent': true
+                }, true);
+                var index = vm.policyData.policyHistory.indexOf(temp[0]);
+                vm.policyData.policyHistory[index] = vm.currentPolicy;
+            } else {
                 vm.policyData.policyHistory.push(vm.currentPolicy);
             }
 
-            sendData.append('policy', angular.toJson(vm.policyData));
+
 
             var newDocuments = $filter('filter')(vm.uploadedFiles, {
                 type: vm.type.new
@@ -182,13 +199,16 @@
             });
             if (deletedDocuments.length > 0) {
                 sendData.append('deletedFiles', _.map(deletedDocuments, 'name').join(','));
+                vm.policyData.deletedFiles = _.map(deletedDocuments, 'name').join(',');
             }
 
+            sendData.append('policy', angular.toJson(vm.policyData));
+
             PolicyService.savePolicy(sendData, function (data) {
-                message.success('Policy','Saved Successfully');
+                message.success('Policy', 'Saved Successfully');
                 $state.go('main.policy.current');
             }, function (error) {
-                message.error('Policy','Error while save policy.');
+                message.error('Policy', 'Error while save policy.');
             })
         };
 
@@ -199,12 +219,13 @@
         vm.addPolicyHistory = function () {
             policyHistoryPopup({
                 policyID: vm.policyData.policyID,
-                isDeleted: false
+                isDeleted: false,
+                isCurrent: false
             });
         };
 
         vm.editPolicyHistory = function (item) {
-            policyHistoryPopup(item,true);
+            policyHistoryPopup(item, true);
         };
 
         vm.deletePolicyHistory = function (item) {
@@ -240,8 +261,8 @@
             showWeeks: false
         };
 
-        function setDTO(){
-            if(vm.policyHistoryData.policyHistoryID){
+        function setDTO() {
+            if (vm.policyHistoryData.policyHistoryID) {
                 vm.policyHistoryData.startDate = new Date(vm.policyHistoryData.startDate);
                 vm.policyHistoryData.endDate = new Date(vm.policyHistoryData.endDate);
             }

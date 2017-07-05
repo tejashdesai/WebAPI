@@ -17,7 +17,7 @@
         };
 
         function getCurrentPolicy() {
-            PolicyService.getCurrentPolicy(function (data) {
+            PolicyService.getExpiredPolicy(function (data) {
                 vm.currentPolicyData = data || [];
             }, function (error) {
                 console.log(error);

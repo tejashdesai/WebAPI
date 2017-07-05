@@ -67,8 +67,7 @@ namespace InsuranceWebAPI.BusinessLayer.Service
                     //     policyHistories = _unitOfWork.PolicyHistoryRepository
                     //.GetManyQueryable(ph => (ph.IsCurrent.HasValue ? ph.IsCurrent.Value : false) && (ph.Policy.IsDeleted.HasValue ? !ph.Policy.IsDeleted.Value : false)).ToList();
                     policyHistories = _unitOfWork.PolicyHistoryRepository
-                    .GetManyQueryable(ph => (DateTime.Now.Date >= (ph.StartDate.HasValue ? ph.StartDate.Value.Date : DateTime.Now.Date) &&
-                     DateTime.Now.Date <= (ph.EndDate.HasValue ? ph.EndDate.Value.Date : DateTime.Now.Date)) &&
+                    .GetManyQueryable(ph => DateTime.Now.Date <= (ph.EndDate.HasValue ? ph.EndDate.Value.Date : DateTime.Now.Date) &&
                      (ph.Policy.IsDeleted.HasValue ? !ph.Policy.IsDeleted.Value : false)).ToList();
                 }
 

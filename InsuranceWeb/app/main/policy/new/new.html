@@ -143,8 +143,8 @@
                                 </div>
                                 <div class="col-xs-12 no-padding">
                                     <div class="col-xs-4 no-padding">
-                                        <div class="col-xs-12 no-padding" ng-repeat="item in new.uploadedFiles">
-                                            <span class="col-xs-10">{{item.name}}</span>
+                                        <div class="col-xs-12 no-padding" ng-repeat="item in new.uploadedFiles" ng-if="item.type != new.type.deleted">
+                                            <span class="col-xs-10"><a ng-href="{{item.fileData}}" target="_blank" download="">{{item.name}}</a></span>
                                             <span class="col-xs-2 text-danger" ng-click="new.removeFile(item)"><i class="fa fa-close"></i></span>
                                         </div>
                                         <div class="col-xs-12" ng-show="new.uploadedFiles.length === 0">
@@ -170,7 +170,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr ng-repeat="item in new.policyData.policyHistory | filter: {'isDeleted' : false} track by $index">
+                                            <tr ng-repeat="item in new.policyData.policyHistory | filter: {'isDeleted' : false , 'isCurrent' : false } track by $index">
                                                 <td>{{item.startDate | date: 'dd-MM-yyyy'}}</td>
                                                 <td>{{item.endDate | date: 'dd-MM-yyyy'}}</td>
                                                 <td>{{item.policyAmount}}</td>
